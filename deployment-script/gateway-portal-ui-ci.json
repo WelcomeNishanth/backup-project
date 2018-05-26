@@ -1,0 +1,35 @@
+{
+  "containerDefinitions": [
+    {
+      "image": "419539186404.dkr.ecr.us-east-1.amazonaws.com/%BUILD_ID%",
+      "name": "gateway-portal-ui-ci",
+      "cpu": 128,
+      "memory": 128,
+      "essential": true,
+      "portMappings": [
+        {
+          "protocol": "tcp",
+          "containerPort": 80,
+          "hostPort": 7099
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "journald",
+        "options": {
+          "tag": "gateway-portal-ui-ci"
+        }
+      },
+      "environment": [
+        {
+          "name": "ENVIRONMENT",
+          "value": "ci"
+        },
+        {
+          "name": "service",
+          "value": "gateway-portal-ui"
+        }
+      ]
+    }
+  ],
+  "family": "gateway-portal-ui-ci"
+}

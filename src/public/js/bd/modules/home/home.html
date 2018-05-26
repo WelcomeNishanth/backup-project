@@ -1,0 +1,287 @@
+<div ng-show="dataLoadInProgress">
+    <div class="loading--gateway" style="display: block">
+        <div class="icon-sent"></div>
+    </div>
+</div>
+
+<div class="gateway--wrapper__full white element">
+  <div class="alert alert-info alert-dismissible alert-rates" role="alert" ng-show="false">
+    <i class="fa fa-info-circle fa-1" aria-hidden="true"></i>
+    Please note, the current rates calculated are standard prices.
+    For our best rates, please contact <a href="mailto::rates@gatewaysupplychain.com">rates@gatewaysupplychain.com</a>.
+  </div>
+    <div class="gateway--notificationpanel maincontent">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h1>How it works</h1>
+                    <ol class="how-it-works">
+                        <li>Request a new quote below.</li>
+                        <li>Accept quote within 7 days.<small>*</small></li>
+                        <li>Receive email with shipping details.</li>
+                    </ol>
+                    <a class="gateway--button__medium blue" href="#/quote/request" >Request New Quote</a>
+                </div>
+                <div class="col-sm-6">
+                    <ul class="quotes-list">
+                        <li><span>{{pendingQuoteCount}}</span>Quotes Pending<br> Acceptance</li>
+                        <!--                        <li><span>{{summaryData.deliveries.pending}}</span>Deliveries<br> Pending</li>
+                        <li><span>{{summaryData.deliveries.completed}}</span>Deliveries<br> Completed</li>-->
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="how-it-works notavailable">
+                      <small>
+                        *A quote is valid for seven days from the effective date of the quote after which the quote will be deemed null and void.
+                      </small>
+                      <small>
+                        If a quote is not available please contact <a href="mailto:rates@gatewaysupplychain.com">rates@gatewaysupplychain.com</a> or call 1-855-727-4283 (Toll-free).
+                      </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="gateway--wrapper__large white maincontent">
+    <div class="container-fluid" >
+        <div class="row" ng-show="(response.quotes != null && response.quotes.length > 0)">
+            <div class="col-lg-12">
+                <h1 class="pull-left">Quotes</h1>
+                <a class="gateway--button__small blue pull-right" href="#/quote/request"> Request New Quote </a>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <!-- Commenting out the filter div as we are not showing this for demo -->
+        <!--        <div class="row gateway--home__filtersearch">
+            <div class="col-xs-12 col-sm-8">
+                <ul class="nav nav-pills gateway--filternav">
+                    <li role="presentation" class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" >
+                            Status <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">One</a></li>
+                            <li><a href="#">Two</a></li>
+                            <li><a href="#">Three</a></li>
+                        </ul>
+                    </li>
+                     Commenting this as we dont have API support for this
+                    <li role="presentation" class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" >
+                            Outbound <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">One</a></li>
+                            <li><a href="#">Two</a></li>
+                            <li><a href="#">Three</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search Quote Number">
+                    <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                </div>
+            </div>
+             Commenting this as we need more clarity on this - we are already showing the filters field on the UI, then why should we need this.
+            <div class="col-xs-12 gateway--filternav__list">
+                <span class="applied-filter">One<a><i class="fa fa-close"></i></a></span>
+                <span class="applied-filter">Two<a><i class="fa fa-close"></i></a></span>
+                <span class="applied-filter">Three<a><i class="fa fa-close"></i></a></span>
+                <span class="applied-filter">Four<a><i class="fa fa-close"></i></a></span>
+                <a href="#"> Clear All</a>
+            </div>
+        </div>-->
+
+        <!-- No Data Exist Begins-->
+        <div class="row" ng-show="(response.quotes.length <= 0 || response.quotes == null) && !dataLoadInProgress">
+            <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+                <div class="gateway--welcome">
+                    <span class="icon--welcome"></span>
+                    <h2>We're ready when you are!</h2>
+                    <h3>When you have requested your first quote, it will appear in here.</h3>
+                    <div class="clearfix"></div>
+                    <a class="gateway--button__small blue" href="#/quote/request">Let's Get Started</a>
+                </div>
+            </div>
+        </div>
+        <!-- No Data Exist Ends-->
+
+        <div class="row gateway--home__accordion" ng-show="response.quotes && response.quotes.length > 0">
+            <div class="col-xs-12">
+                <div class="gateway--accordion__large gateway--quotes__accordion" id="accordion" role="tablist" >
+                    <div class="panel heading" role="tab">
+                        <div class="items--wrapper">
+                            <div class="items one" ng-click="getSortedList('estimate_id')">Quote Id <i class="fa" ng-class="{'fa-sort': filter.sortKey!='estimate_id', 'fa-sort-up': filter.sortKey=='estimate_id' && filter.sortBy=='asc', 'fa-sort-down': filter.sortKey=='estimate_id' && filter.sortBy=='desc'}"></i></div>
+                            <div class="items two">From </div>
+                            <div class="items three">To </div>
+                            <div class="items four" ng-click="getSortedList('effective_date')">Effective Date <i class="fa" ng-class="{'fa-sort': filter.sortKey!='effective_date', 'fa-sort-up': filter.sortKey=='effective_date' && filter.sortBy=='asc', 'fa-sort-down': filter.sortKey=='effective_date' && filter.sortBy=='desc'}"></i></div>
+                            <div class="items five" ng-click="getSortedList('expiry_date')">Quote Expiry  <i class="fa" ng-class="{'fa-sort': filter.sortKey!='expiry_date', 'fa-sort-up': filter.sortKey=='expiry_date' && filter.sortBy=='asc', 'fa-sort-down': filter.sortKey=='expiry_date' && filter.sortBy=='desc'}"></i></div>
+                            <div class="items six">Rate Quoted (USD)</div>
+                            <div class="items seven" ng-click="getSortedList('status')">Status <i class="fa" ng-class="{'fa-sort': filter.sortKey!='status', 'fa-sort-up': filter.sortKey=='status' && filter.sortBy=='asc', 'fa-sort-down': filter.sortKey=='status' && filter.sortBy=='desc'}"></i></div>
+                        </div>
+                    </div>
+                    <div class="panel" role="tab" data-toggle="collapse" data-parent="#accordion" ng-repeat="quote in response.quotes" data-target="#collapse{{$index}}">
+                        <div class="items--wrapper" ng-click="loadMoreQuoteInfo(quote)">
+                            <div class="items one" title="{{quote.estimate_id}}"><label class="mobile--heading">Quote Id :</label>{{quote.estimate_id}} </div>
+                            <div class="items two" title="{{quote.request.originLocation.city}}, {{quote.request.originLocation.state}}, {{countryValues[quote.request.originLocation.country]}}"><label class="mobile--heading">From :</label>{{quote.request.originLocation.city}}, {{quote.request.originLocation.state}}</div>
+                            <div class="items three" title="{{quote.request.destinationLocation.city}}, {{quote.request.destinationLocation.state}}, {{countryValues[quote.request.destinationLocation.country]}}"><label class="mobile--heading">To :</label>{{quote.request.destinationLocation.city}}, {{quote.request.destinationLocation.state}}</div>
+                            <div class="items four" title="{{quote.effective_date}}"><label class="mobile--heading">Effective Date :</label>{{quote.effective_date}} </div>
+                            <div class="items five" title="{{quote.expiry_date}}"><label class="mobile--heading">Quote Expiry :</label>{{quote.expiry_date}} </div>
+                            <div class="items six"><label class="mobile--heading">Rate Quoted (USD) :</label><span ng-show="quote.rate_quoted != 0 && quote.rate_quoted != ''">{{quote.rate_quoted}} </span><span ng-show="quote.rate_quoted <= 0">Not Available</span></div>
+                            <div class="items seven"><label class="mobile--heading">Status :</label>
+                                <span ng-show="(quote.status == 'accepted' || quote.status == 'expired' || quote.status == 'manual quote')" class="label" ng-class="{expired: quote.status == 'expired', accepted: quote.status == 'accepted', manual: quote.status == 'manual quote'}">{{quote.status}}</span>
+                                <!--<button class="gateway--button__small noaccordion" ng-show="quote.status=='pending' && quote.options.length>1 && quote.rate_quoted != 0 && quote.rate_quoted != ''">Select A Quote</button>-->
+                                <a class="gateway--button__small noaccordion" ng-show="quote.status == 'pending' && quote.rate_quoted != 0 && quote.rate_quoted != ''" href="javascript: void(0)" ng-click="acceptQuote(quote.estimate_id); $event.stopPropagation();">Book Shipment</a>
+                                <a ng-click="useForNewQuote(quote); $event.stopPropagation();" class="new--quote">Use for New  Quote</a>
+                            </div>
+                            <div class="expand-notifier">
+                                <i class="fa fa-angle-up"></i>
+                                <i class="fa fa-angle-down"></i>
+                            </div>
+                        </div>
+                        <div id="collapse{{$index}}" class="collapse" role="tabpanel">
+                            <div class="panel--content">
+                                <div class="row" ng-show="quote.detailedInfoLoaded">
+                                    <div class="col-xs-12 col-sm-6">
+                                        <ul>
+                                            <!--                                            <li><div class="legend">Estimated Pickup Date:</div><div class="data">{{quote.estimated_pickup_date}}</div></li>-->
+                                            <li>
+                                                <div class="legend">Quote Id:</div>
+                                                <div class="data">{{quote.estimate_id}}</div>
+                                            </li>
+                                            <li>
+                                                <div class="legend">From Location:</div>
+                                                <div class="data">{{quote.request.originLocation.city}}, {{quote.request.originLocation.state}}, {{countryValues[quote.request.originLocation.country]}} {{quote.request.originLocation.postalCode}}</div>
+                                                <div ng-if="!(quote.request.originLocation.information.locationType === undefined || quote.request.originLocation.information.locationType === null || Object.keys(quote.request.originLocation.information.locationType).length === 0)">
+                                                    <div class="legend" style="margin-top: 8px">Location Type:</div>
+                                                    <div class="data type" style="margin-top: 8px">{{quote.request.originLocation.information.locationType.displayName}}</div>
+                                                </div>
+                                            </li>
+<!--Dummy checkin-->
+                                            <li ng-if="(quote.status === 'accepted') && !(quote.options[0].drop_off_location === undefined || quote.options[0].drop_off_location === null || Object.keys(quote.options[0].drop_off_location).length === 0)">
+                                                <div class="legend">Drop Off Location:</div>
+                                                <div class="data address">
+                                                    {{quote.options[0].drop_off_location.addressLine}},
+                                                    {{quote.options[0].drop_off_location.city}}, {{quote.options[0].drop_off_location.state}}, {{countryValues[quote.options[0].drop_off_location.country]}} {{quote.options[0].drop_off_location.postalCode}}</div>
+                                                <div class="legend" style="margin-top: 8px">Phone:</div>
+                                                <div class="data type" style="margin-top: 8px">{{quote.options[0].drop_off_location.contact.phone}}</div>
+                                            </li>
+
+                                            <li>
+                                                <div class="legend">To Location:</div>
+                                                <div class="data">{{quote.request.destinationLocation.city}}, {{quote.request.destinationLocation.state}}, {{countryValues[quote.request.destinationLocation.country]}} {{quote.request.destinationLocation.postalCode}}</div>
+                                                <div ng-if="!(quote.request.destinationLocation.information.locationType === undefined || quote.request.destinationLocation.information.locationType === null || Object.keys(quote.request.destinationLocation.information.locationType).length === 0)">
+                                                    <div class="legend" style="margin-top: 8px">Location Type:</div>
+                                                    <div class="data type" style="margin-top: 8px">{{quote.request.destinationLocation.information.locationType.displayName}}</div>
+                                                </div>
+                                            </li>
+
+                                            <li>
+                                                <div class="legend">Request Date:</div>
+                                                <div class="data">{{quote.requested_date}}</div>
+                                            </li>
+
+                                            <li ng-if="quote.status === 'accepted' && quote.options && quote.options.length > 0">
+                                                <div ng-if="!(quote.options[0]['accepted_quote_type'] === undefined || quote.options[0]['accepted_quote_type'] == null)">
+                                                <div class="legend">Shipping Option:</div>
+                                                <div class="data type">{{quote.options[0]['accepted_quote_type']}}</div>
+                                                </div>
+
+                                                <div ng-if="!(quote.options[0]['transit_time'] === undefined || quote.options[0]['transit_time'] == null)">
+                                                <div class="legend" style="margin-top: 8px">Estimated Delivery:</div>
+                                                <div class="data type" style="margin-top: 8px">{{quote.options[0]['transit_time']}}</div>
+                                                </div>
+                                            </li>
+
+                                            <li ng-show="quote.requested_user && quote.requested_user != null">
+                                                <div class="legend">Requested By:</div>
+                                                <div class="data type">{{quote.requested_user}}</div>
+                                                <div ng-if="!(quote.accepted_user === undefined || quote.accepted_user == null)">
+                                                    <div class="legend" style="margin-top: 8px">Accepted By:</div>
+                                                    <div class="data type" style="margin-top: 8px">{{quote.accepted_user}}</div>
+                                                </div>
+                                            </li>
+                                            <!--                                            <li><div class="legend">Pickup Services:</div><div class="data">{{quote.services.pickUpOptions.join(', ')}}</div></li>
+                                            <li><div class="legend">Delivery Services:</div><div class="data">Liftgate Delivery, White Glove Delivery</div></li>-->
+                                        </ul>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-6">
+                                        <ul>
+                                            <li>
+                                                <div class="legend">Products:</div>
+                                                <div class="data">
+                                                    <ul>
+                                                        <li ng-repeat="freightItem in quote.request.freightItems">
+                                                          <div class="description">{{freightItem.description}}
+                                                           </div>
+                                                           </br>
+                                                            {{freightItem.quantity}} {{freightItem.unit}} of {{freightItem.dimensions.length}}" x {{freightItem.dimensions.width}}" x {{freightItem.dimensions.height}}" at {{freightItem.weight.weight}} lbs
+                                                            <br>
+                                                            Class code: {{freightItem.classCode}}     <span ng-show="freightItem.nmfc && freightItem.nmfc != null && freightItem.nmfc != ''">NMFC code: {{freightItem.nmfc}}</span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div ng-hide="quote.detailedInfoLoaded">
+                                    <div class="loading--gateway" style="display: block;position: relative;text-align: center;min-height: 150px;background: #fff;">
+                                        <div class="icon-sent"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row myquote--pagination" ng-show="response.quotes && response.quotes.length > 0">
+            <div class="col-xs-3 sorting--left"></div>
+            <div class="col-xs-6">
+                <div class="dataTables_paginate paging_bs_four_button" id="DataTables_Table_0_paginate">
+                    <ul class="pagination">
+                        <li ng-class="filter.pageNo <= 1 ? 'disabled' : ''">
+                            <a href="javascript: void(0);" tabindex="0" class="paginate_button first" id="DataTables_Table_0_first" ng-click="goToPage(1)" ng-disabled="filter.pageNo <= 1">&nbsp;First</a>
+                        </li>
+                        <li ng-class="filter.pageNo <= 1 ? 'disabled' : ''">
+                            <a href="javascript: void(0);" tabindex="0" class="paginate_button previous" id="DataTables_Table_0_previous" ng-click="goToPage(filter.pageNo - 1)" ng-disabled="filter.pageNo <= 1">&nbsp;Previous</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link link" href="javascript: void(0);"><span>{{filter.pageNo}}</span> of <span>{{filter.totalPages}}</span></a>
+                        </li>
+                        <li ng-class="filter.pageNo >= filter.totalPages ? 'disabled' : ''">
+                            <a href="javascript: void(0);" tabindex="0" class="paginate_button next" id="DataTables_Table_0_next" ng-click="goToPage(filter.pageNo + 1)" ng-disabled="filter.pageNo >= filter.totalPages">Next&nbsp;</a>
+                        </li>
+                        <li ng-class="filter.pageNo >= (filter.totalPages) ? 'disabled' : ''">
+                            <a href="javascript: void(0);" tabindex="0" class="paginate_button last" id="DataTables_Table_0_last" ng-click="goToPage(filter.totalPages)" ng-disabled="filter.pageNo >= filter.totalPages">Last&nbsp;</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-xs-3 sorting--page">
+                <div class="form-group">
+                    <label>
+                        <div class="result--heading">Results per page:</div>
+                        <label class="delivery--select">
+                            <select class="form-control" id="exampleSelect1" ng-model="filter.limit" ng-change="limitChanged()">
+                                <option value="10" ng-selected="filter.limit == 10">10</option>
+                                <option value="20" ng-selected="filter.limit == 20">20</option>
+                                <option value="30" ng-selected="filter.limit == 30">30</option>
+                                <option value="40" ng-selected="filter.limit == 40">40</option>
+                                <option value="50" ng-selected="filter.limit == 50">50</option>
+                            </select>
+                        </label>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

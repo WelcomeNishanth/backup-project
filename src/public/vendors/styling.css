@@ -1,0 +1,499 @@
+/*-------------------------------------
+ * Scroll Bar
+ ------------------------------------*/
+ /* Turn on custom 8px wide scrollbar */
+::-webkit-scrollbar {
+  width: 10px; /* 1px wider than Lion. */
+  /* This is more usable for users trying to click it. */
+  background-color: rgba(241,241,241,0);
+  -webkit-border-radius: 10px;
+}
+/* hover effect for both scrollbar area, and scrollbar 'thumb' */
+::-webkit-scrollbar:hover {
+  background-color: rgba(241,241,241,0.9);
+}
+
+/* The scrollbar 'thumb' ...that marque oval shape in a scrollbar */
+::-webkit-scrollbar-thumb:vertical {
+  /* This is the EXACT color of Mac OS scrollbars.
+     Yes, I pulled out digital color meter */
+  background: rgba(0,0,0,0.2);
+  -webkit-border-radius: 100px;
+  background-clip: padding-box;
+  border: 2px solid rgba(0, 0, 0, 0);
+  min-height: 10px; /*Prevent it from getting too small */
+}
+::-webkit-scrollbar-thumb:vertical:active {
+  background: rgba(0,0,0,0.2); /* Some darker color when you click it */
+  -webkit-border-radius: 10px;
+}
+
+.panel-heading .accordion-toggle:after {
+  /* symbol for "opening" panels */
+  font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
+  content: "\e114";    /* adjust as needed, taken from bootstrap.css */
+  float: right;        /* adjust as needed */
+  color: grey;         /* adjust as needed */
+  font-size: 14px !important;
+}
+.panel-heading .accordion-toggle.collapsed:after {
+  /* symbol for "collapsed" panels */
+  content: "\e080";    /* adjust as needed, taken from bootstrap.css */
+}
+.panel-default>.panel-heading+.panel-collapse>.panel-body {
+  border-top-color: transparent;
+}
+.panel-default>.panel-heading {
+  background-color: transparent;
+}
+/*-------------------------------------
+ * Mobile ovelay Menu
+ ------------------------------------*/
+.mobmenu { display: none; }
+.mobmenuright { display: none; }
+@media only screen and (max-width: 768px) {
+/*#ust {
+  top: 0;
+  left: 0;
+}*/
+  #ust #menuac {
+    position: absolute;
+    top: 17px;
+    left: 270px;
+    cursor: pointer;
+    padding: 19px 30px 20px 10px;
+  }
+  #ust #menuac span {
+    cursor: pointer;
+    height: 3px;
+    width: 23px;
+    background: #fff;
+    position: absolute;
+    display: block;
+    content: '';
+    transition: all 500ms ease-in-out;
+  }
+  #ust #menuac span:before {
+    cursor: pointer;
+    height: 3px;
+    width: 23px;
+    background: #fff;
+    position: absolute;
+    display: block;
+    content: '';
+    top: -7px;
+    transition: all 500ms ease-in-out;
+  }
+  #ust #menuac span:after {
+    cursor: pointer;
+    height: 3px;
+    width: 23px;
+    background: #fff;
+    position: absolute;
+    display: block;
+    content: '';
+    bottom: -7px;
+    transition: all 500ms ease-in-out;
+    border-top: 0;
+  }
+  #ust #menuac.acik span { background-color: transparent; }
+  #ust #menuac.acik span:before {
+    top: 0px;
+    transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    bottom: 0;
+  }
+  #ust #menuac.acik span:after {
+    top: 0;
+    transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+  }
+  .mobmenu {
+    position: fixed;
+    left: -270px;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    width: 270px;
+    height: 100vh;
+    background: #fff;
+    z-index: 9;
+    display: block;
+    z-index: 1100;
+    top: 0;
+  }
+  .overlay--menu {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1050;
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+    outline: 0;
+    background: #121A23;
+    opacity: .8;
+  }
+  .mobmenu.mobmenu-acik {
+    left: 0;
+    -webkit-box-shadow: 10px 0px 26px -16px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 0px 26px -16px rgba(0,0,0,0.75);
+    box-shadow: 10px 0px 26px -16px rgba(0,0,0,0.75);
+  }
+  .mobmenu.mobmenu-acik::after {
+    position: absolute;
+    width: 100px;
+    height: 200px;
+    background: #fff;
+    right: 300px;
+  }
+
+  .mobmenu ul.menu {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .mobmenu ul.menu li a {
+    padding: 10px;
+    display: block;
+    list-style: none;
+    color: #444;
+    border-bottom: 1px solid #ddd;
+  }
+  #MainMenu .panel {
+    border: 0;
+    box-shadow: none;
+  }
+  #icerik {
+    padding: 50px 10px 10px 10px;
+    border: 1px solid #ddd;
+    height: 1000px;
+    background: #fff;
+  }
+  /*Mobile MEnu Right*/
+  .mobmenuright {
+    position: fixed;
+    right: -270px;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    width: 270px;
+    height: 100vh;
+    background: #fff;
+    z-index: 1250;
+    display: block;
+    top: 0;
+  }
+  .mobmenuright::after {
+    display: block;
+    width: 40px;
+    height: 40px;
+    background: red;
+  }
+  .mobmenuright.mobmenu-acik-right {
+    right: 0;
+    -webkit-box-shadow: 10px 0px 26px -16px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 0px 26px -16px rgba(0,0,0,0.75);
+    box-shadow: 10px 0px 26px -16px rgba(0,0,0,0.75);
+  }
+  .mobmenuright ul.menu {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .mobmenuright ul.menu li a {
+    padding: 10px;
+    display: block;
+    list-style: none;
+    color: #fff;
+    border-bottom: 1px solid #ddd;
+  }
+  .navbar-header {
+    display: block;
+    top: 0;
+    position: absolute;
+    width: 100%;
+  }
+  #MainMenuRight {
+    position: relative;
+  }
+  #MainMenuRight .closemenu {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+  }
+  #MainMenuRight .closemenu  .close--menu {
+    color: #fff;
+    font-size: 36px;
+    opacity: 1;
+    margin-top: 0;
+    position: absolute;
+    top: 11px;
+    right: 45px;
+    background: transparent;
+    text-shadow: none;
+    border: 0;
+    display: none;
+    outline: 0;
+  }
+  #MainMenuRight .submenu {
+    font-size: 13px;
+    font-weight: 400;
+    text-indent: 20px;
+    border: 0;
+    padding-top: 10px;
+    padding-bottom: 20px;
+  }
+  #MainMenuRight .submenu:last-child {
+    padding-top: 10px;
+  }
+  #MainMenuRight .panel {
+    box-shadow: none;
+    border: 0;
+  }
+  #MainMenuRight .panel .glyphicon{
+    top: 5px;
+  }
+  }
+  a.list-group-item:focus, a.list-group-item:hover, button.list-group-item:focus, button.list-group-item:hover {
+    color: #444;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+  .overlay--menu__right {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1200;
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+    outline: 0;
+    background: #121A23;
+    opacity: .8;
+  }
+}
+
+.panel {
+  margin-bottom: 20px;
+  background-color: #fff;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  font-size: 14px;
+  color: #444444;
+  letter-spacing: 0;
+}
+.list-group-item {
+  padding: 20px 15px;
+}
+.list-group.panel > .list-group-item {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  border-right: 0;
+}
+.list-group-submenu {
+  margin-left:20px;
+  border-top: 0;
+  border-left: 0;
+}
+.list-group-item:first-child {
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+}
+a.list-group-item, button.list-group-item {
+  color: #444;
+  font-weight: 700;
+}
+/*------------------------------------------------------------------------------
+Custom css for autho login
+------------------------------------------------------------------------------*/
+.auth0-lock.auth0-lock .auth0-lock-overlay {
+  background: #121A23 !important;
+  opacity: .8 !important;
+}
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+.auth0-lock.auth0-lock .auth0-lock-widget {
+  width: 380px !important;
+  max-height: 445px !important;
+  background: #fff !important;
+  border-radius: 0 !important;
+  padding: 30px !important;
+}
+.auth0-lock.auth0-lock.auth0-lock-opened .auth0-lock-widget {
+  border-radius: 0 !important;
+}
+.auth0-lock.auth0-lock .auth0-lock-header-logo {
+  width: 236px !important;
+  height : 18px !important;
+  margin: 10px 0 !important;
+}
+.auth0-lock.auth0-lock .auth0-lock-header {
+  height: 50px !important;
+}
+.auth0-lock.auth0-lock .auth0-lock-header-bg {
+  background: none !important;
+}
+.auth0-lock-header-welcome {
+  display: none !important;
+  width: 100% !important;
+  height: 30px !important;
+}
+.auth0-lock-header-logo {
+  display: none !important;
+}
+.auth0-lock.auth0-lock .auth0-lock-submit span svg {
+  display: none !important;
+}
+.auth0-lock.auth0-lock .auth0-lock-submit {
+  background-color: rgb(22, 112, 102) !important;
+  background: #0053a1 !important;
+  border: solid 1px #0053a1 !important;
+  padding: 0 !important;
+  font-size: 20px !important;
+  text-transform: capitalize !important;
+  line-height: 40px !important;
+  height: 56px !important;
+  border-radius: 0 !important;
+}
+.auth0-lock.auth0-lock .auth0-lock-input-wrap .auth0-lock-icon, .auth0-lock.auth0-lock .auth0-lock-input-wrap .auth0-lock-custom-icon {
+  top: 20px !important;
+}
+.auth0-lock.auth0-lock .auth0-lock-input-wrap .auth0-lock-icon.auth0-lock-icon-box, .auth0-lock.auth0-lock .auth0-lock-input-wrap .auth0-lock-custom-icon.auth0-lock-icon-box {
+  top: 18px !important;
+}
+.auth0-lock.auth0-lock .auth0-lock-close-button, .auth0-lock.auth0-lock .auth0-lock-back-button {
+  background: none !important;
+  border-radius: 0 !important;
+  height: 14px !important;
+  width: 14px !important;
+  box-shadow: none !important;
+  border: 0 !important;
+}
+.auth0-lock.auth0-lock .auth0-global-message.auth0-global-message-error {
+  background: #D3335C !important;
+}
+.auth0-lock.auth0-lock .auth0-lock-input-wrap .auth0-lock-input {
+  height: 100% !important;
+  font-size: 16px !important;
+  padding: 15px 14px !important;
+}
+.auth0-lock.auth0-lock .auth0-lock-input-wrap.auth0-lock-input-wrap-with-icon {
+  height: 50px !important;
+}
+.auth0-lock .auth0-lock-last-login-pane .auth0-lock-social-button.auth0-lock-social-big-button {
+  margin: 0 auto !important;
+}
+.auth0-lock.auth0-lock.auth0-lock-opened .auth0-lock-body-content {
+  min-height: auto !important;
+}
+.auth0-lock.auth0-lock.auth0-lock-opened .auth0-lock-submit {
+  margin: 0 auto !important;
+  width: 100% !important;
+}
+.auth0-lock-error-msg {
+  width: 108px !important;
+}
+.auth0-lock.auth0-lock .auth0-lock-header-bg .auth0-lock-header-bg-solid {
+  opacity: 0 !important;
+}
+.auth0-lock.auth0-lock.auth0-lock-opened .auth0-lock-header-bg .auth0-lock-header-bg-blur {
+  opacity: 1 !important;
+}
+.auth0-lock.auth0-lock .auth0-lock-header-bg .auth0-lock-header-bg-blur {
+  display: block !important;
+  height: 50px !important;
+  width: 100%;
+  filter: none !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-size: auto !important;
+  opacity: 1 !important;
+  transition: none !important;
+  background-position: center !important;
+  background-size: 240px !important;
+}
+@media screen and (max-width: 480px) {
+  .auth0-lock.auth0-lock.auth0-lock-opened .auth0-lock-widget {
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+  .auth0-lock.auth0-lock .auth0-lock-header {
+    height: 50px !important;
+  }
+  .auth0-lock.auth0-lock .auth0-lock-header-bg .auth0-lock-header-bg-solid {
+    background: none !important;
+  }
+  .auth0-lock.auth0-lock.auth0-lock-opened .auth0-lock-content {
+    display: block !important;
+  }
+}
+
+/*Form Wizard*/
+.bs-wizard {margin-top: 40px; display: block; overflow: hidden; width: 94%;
+  margin: 5px 3% 10px 3%;
+  overflow: visible;
+  padding: 0 0 10px 0;
+}
+.bs-wizard > .bs-wizard-step {padding: 0; position: relative;}
+.bs-wizard > .bs-wizard-step a {
+  color: #fff;
+  text-decoration: none;
+}
+.bs-wizard > .bs-wizard-step a.link, .bs-wizard > .bs-wizard-step a:hover {
+  color: #fff;
+  text-decoration: none;
+}
+.bs-wizard > .bs-wizard-step + .bs-wizard-step {}
+.bs-wizard > .bs-wizard-step .bs-wizard-stepnum {
+  color: #888;
+  font-size: 14px;
+  margin-bottom: 5px;
+  font-weight: 700;
+  position: absolute;
+  width: 100px;
+  text-align: center;
+  left: -40px;
+  top: 30px;
+}
+.bs-wizard > .bs-wizard-step .bs-wizard-info {color: #999; font-size: 14px;}
+.bs-wizard > .bs-wizard-step > .bs-wizard-dot {position: absolute; width: 30px; z-index: 1; height: 30px; display: block; background: #177369; top: 20px; margin-top: -15px; margin-left: -15px; border-radius: 50%;}
+.bs-wizard > .bs-wizard-step > .bs-wizard-dot-last {position: absolute; width: 30px; z-index: 1; height: 30px; display: block; background: #177369; top: 20px; margin-top: -15px; margin-right: -15px; border-radius: 50%; right:0;}
+.bs-wizard > .bs-wizard-step > .bs-wizard-dot-2nd {position: absolute; width: 30px; z-index: 1; height: 30px; display: block; background: #177369; top: 20px; margin-top: -15px; margin-right: -15px; border-radius: 50%; right:0;}
+.bs-wizard > .bs-wizard-step > .bs-wizard-dot i { color: #fff; left: 8px; top: 8px; position: absolute;}
+.bs-wizard > .bs-wizard-step > .progress {position: relative; border-radius: 0px; height: 2px; box-shadow: none; margin: 20px 0;
+background: url(https://$$CDN_LOCATION/img/dash.png) center repeat-x;
+background-color: transparent;
+}
+.bs-wizard > .bs-wizard-step > .progress > .progress-bar {width:0px; box-shadow: none; background: #177369;}
+.bs-wizard > .bs-wizard-step.intransit > .progress > .progress-bar {width:100%;}
+.bs-wizard > .bs-wizard-step.active > .progress > .progress-bar {width:50%;}
+.bs-wizard > .bs-wizard-step:first-child.active > .progress > .progress-bar {width:0%;}
+.bs-wizard > .bs-wizard-step:last-child.active > .progress > .progress-bar {width: 100%;}
+.bs-wizard > .bs-wizard-step.disabled {background: transparent !important;}
+.bs-wizard > .bs-wizard-step.disabled > .bs-wizard-dot { background-color: #fff;  border: 2px solid #ddd;}
+.bs-wizard > .bs-wizard-step.disabled > .bs-wizard-dot:after {opacity: 0;}
+/*.bs-wizard > .bs-wizard-step:first-child  > .progress {left: 50%; width: 50%;}*/
+.bs-wizard > .bs-wizard-step:first-child  > .progress { width: 100%;}
+.bs-wizard > .bs-wizard-step:last-child  > .progress {width: 100%;}
+.bs-wizard > .bs-wizard-step.disabled a.bs-wizard-dot{ pointer-events: none; }
+.bs-wizard > .bs-wizard-step.disabled a.bs-wizard-dot-last{ pointer-events: none; background-color: #fff;  border: 2px solid #ddd;}
+.bs-wizard > .bs-wizard-step.disabled a.bs-wizard-dot-2nd{ pointer-events: none; background-color: #fff;  border: 2px solid #ddd;}
+/*END Form Wizard*/
+.disabled > .progress > .progress-bar {
+  background: transparent !important;
+}

@@ -1,0 +1,372 @@
+<div class="gateway--wrapper__full gateway--registration">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="progress">
+                    <div class="progress--bar--container__1">
+                        <div class="progress-bar progress--about" ng-class="{'progress--fill': step >= 2}" role="progressbar" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress--title">About You</div>
+                        </div>
+                    </div>
+                    <div class="progress--bar--container__2">
+                        <div class="progress-bar" ng-class="{'progress--about': step >= 2.5 , 'progress--fill': step == 3}" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress--title">Your Company</div>
+                        </div>
+                    </div>
+                    <div class="progress--bar--container__3">
+                        <div class="progress-bar progress--agreement" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress--title">Gateway Supply Chain Agreement</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="back-to" ng-click="backToPreviousStep()" ng-show="step>1"><i class="fa fa-arrow-left fa-1" aria-hidden="true"></i>Back to previous step</div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <!--Registration-->
+            <div class="registration--container" >
+                <div class="col-md-12" id="step--one" ng-show="step == 1">
+                    <div class="alert alert-success userDetailsForm-msg userDetailsForm-success">
+                        <a href="" class="close" data-dismiss="alert" aria-label="close" ng-click="close('userDetailsForm-success')"> ×</a>
+                        Profile saved successfully.
+                    </div>
+                    <div class="alert alert-dismissible alert-danger userDetailsForm-msg userDetailsForm-error" role="alert">
+                        <button type="button" class="close" aria-label="Close" ng-click="close('userDetailsForm-error')">
+                          <span aria-hidden="true">×</span>
+                        </button>
+                        <div class="userDetailsForm-error-content"></div>
+                    </div>
+                    <form name="userDetailsForm">
+                        <h1>About you</h1>
+                        <h3>Let us know how we can contact you</h3>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">First Name</label>
+                            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="First Name" ng-model="user.first_name" required>
+                            <div class="errorcontainer"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>First Name is required.</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Last Name</label>
+                            <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Last Name" ng-model="user.last_name" required>
+                            <div class="errorcontainer"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Last Name is required.</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Email</label>
+                            <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Email" ng-model="user.email" ng-disabled="true">
+                        </div>
+                        <div class="form-group">
+                            <label for="two">Phone Number</label>
+                            <input type="tel" class="form-control" id="ten" ng-model="user.phone_number" placeholder="Phone Number" required name="userPhoneNumber">
+                            <div class="errorcontainer"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Phone Number is required.</div>
+                        </div>
+<!--                        <div class="form-group min-height">
+                            <div class="phone--left">
+                                <label for="two">Phone number</label>
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <label class="registration--select">
+                                            <select class="form-control country-code" id="eight" ng-model="user.country_code" required>
+                                                <option value="+1">CA</option>
+                                                <option value="+1">US</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <input type="tel" class="form-control phone--number" id="ten" ng-model="user.phone_number" required name="userPhoneNumber">
+                                </div>
+                                <div class="error--container" ng-show="userDetailsForm.userPhoneNumber.$touched && userDetailsForm.userPhoneNumber.$error.required"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Phone number is required.</div>
+                            </div>
+                            <div class="phone--right">
+                                <label for="two">Ext.</label>
+                                <input class="form-control extention" id="four" type="text" ng-model="user.extension">
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>-->
+                        <button class="gateway--button__large bdblue step--one__btn" ng-click="saveAndContinue('userDetailsForm')" ng-disabled="userDetailsForm.$invalid">Save and Continue</button>
+                    </form>
+                </div>
+                <!--About you Section Ends-->
+                <!--Your Company Section Starts-->
+                <div class="col-md-12" id="step--two" ng-show="step == 2">
+                    <div class="alert alert-success companyDetailsForm1-msg companyDetailsForm1-success">
+                        <a href="" class="close" data-dismiss="alert" aria-label="close" ng-click="close('companyDetailsForm1-success')"> ×</a>
+                        Company Profile saved successfully.
+                    </div>
+                    <div class="alert alert-dismissible alert-danger companyDetailsForm1-msg companyDetailsForm1-error" role="alert">
+                        <button type="button" class="close" aria-label="Close" ng-click="close('companyDetailsForm1-error')">
+                          <span aria-hidden="true">×</span>
+                        </button>
+                        <div class="companyDetailsForm1-error-content"></div>
+                    </div>
+                    <form name="companyDetailsForm1">
+                        <h1>About your company</h1>
+                        <h3>Name your company </h3>
+                        <div class="form-group" ng-show="false">
+                            <label for="exampleInputPassword1">Business type</label>
+                            <label class="registration--select">
+                                <select class="form-control" id="one">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                </select>
+                            </label>
+                            <div class="errorcontainer"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Error Message</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Registered Corporate Name</label>
+                            <input type="text" class="form-control" id="two" placeholder="Registered Corporate Name" ng-model="company.legal_name" required name="legalCompanyName">
+                            <div class="field-info">This is the legally registered name of your company. E.g. ABC Company Ltd. </div>
+                            <div class="error--container" ng-show="companyDetailsForm1.legalCompanyName.$touched && companyDetailsForm1.legalCompanyName.$error.required"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Registered Corporate Name is required</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Doing Business As</label>
+                            <input type="text" class="form-control" id="two" placeholder="Doing Business As" ng-model="company.name" required name="doingBusinessAs">
+                            <div class="field-info">This is the name your company uses to operate and provide services to the public (if different than your Registered Corporate Name).</div>
+                            <div class="error--container" ng-show="companyDetailsForm1.doingBusinessAs.$touched && companyDetailsForm1.doingBusinessAs.$error.required"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Doing Business As is required.</div>
+                        </div>
+                        <button class="gateway--button__large bdblue step--two__btn" ng-click="saveAndContinue('companyDetailsForm1')" ng-disabled="companyDetailsForm1.$invalid">Save and Continue</button>
+                    </form>
+                </div>
+                <!--Your Company Section Ends-->
+                <!--Mailing address Section starts-->
+                <div class="col-md-12" id="step--two" ng-show="step == 2.5">
+                    <div class="alert alert-success companyDetailsForm2-msg companyDetailsForm2-success">
+                        <a href="" class="close" data-dismiss="alert" aria-label="close" ng-click="close('companyDetailsForm2-success')"> ×</a>
+                        Company Mailing Address saved successfully.
+                    </div>
+                    <div class="alert alert-dismissible alert-danger companyDetailsForm2-msg companyDetailsForm2-error" role="alert">
+                        <button type="button" class="close" aria-label="Close" ng-click="close('companyDetailsForm2-error')">
+                          <span aria-hidden="true">×</span>
+                        </button>
+                        <div class="companyDetailsForm2-error-content"></div>
+                    </div>
+                    <form name="companyDetailsForm2">
+                        <h1>Mailing Address</h1>
+                        <h3></h3>
+                        <div class="form-group">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Street Address</label>
+                            <input type="text" class="form-control" id="" placeholder="Street Address" ng-model="company.mailing_address.address1" required>
+                            <div class="errorcontainer"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Street Address is required.</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">City</label>
+                            <input type="text" class="form-control" id="" placeholder="City" ng-model="company.mailing_address.city" >
+                            <div class="errorcontainer" ng-show="false"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>City is required.</div>
+                        </div>
+                        <div class="form-group">
+                          <div class="phone--left">
+                            <label for="two">Country</label>
+                            <div class="input-group">
+                              <div class="input-group-btn">
+                                <label class="gateway--select">
+                                  <select name="mailingCountry" id="countries2" class="form-control countries firefox--fix" ng-model="company.mailing_address.country" required  ng-change="emptyState(company.mailing_address)">
+                                    <option value="">Select a Country</option>
+                                    <!--<option value='CA'>Canada</option>-->
+                                    <!--<option value='US'>United States</option>-->
+                                    <option ng-repeat="c in countryList" value="{{c.value}}">{{c.key}}</option>
+                                  </select>
+                                </label>
+                              </div>
+                            </div>
+                            <div class="error--container" ng-show="companyDetailsForm2.mailingCountry.$touched && companyDetailsForm2.mailingCountry.$error.required"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Country is required.</div>
+                          </div>
+                          <div class="phone--right">
+                            <label for="two">State</label>
+                            <div class="input-group">
+                              <div class="input-group-btn">
+                                <label class="gateway--select" ng-if="company.mailing_address.country == 'US' || company.mailing_address.country == 'CA'">
+                                    <select name="mailingState" id="countries2" class="form-control state firefox--fix" ng-model="company.mailing_address.state" required>
+                                        <option value="">Select a State</option>
+                                        <option ng-repeat="stateValue in getStateByCountry(company.mailing_address.country)" value='{{stateValue.value}}' ng-selected="company.mailing_address.state==stateValue.value">{{stateValue.value}}</option>
+                                    </select>
+                                </label>
+                                <input ng-if="company.mailing_address.country != 'US' && company.mailing_address.country != 'CA'" type="text" name="mailingStateInput" id="countries2" class="form-control form--control__gateway state" ng-model="company.mailing_address.state" required/>
+                              </div>
+                            </div>
+                            <div class="error--container" ng-show="(companyDetailsForm2.mailingState.$touched && companyDetailsForm2.mailingState.$error.required) || (companyDetailsForm2.mailingStateInput.$touched && companyDetailsForm2.mailingStateInput.$error.required)"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>State is required.</div>
+                          </div>
+                          <div class="clearfix"></div>
+                        </div>
+                        <div class="form-group">
+                          <label for="one">Zip Code</label>
+                          <input type="text" class="form-control zipcode" placeholder="Zip Code" id="" ng-model="company.mailing_address.postal_code">
+                          <span class="errorcontainer"><i class="fa fa-exclamation-triangle fa-1"></i>Zip Code is required.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="two">Phone Number</label>
+                            <input type="tel" name="mailingPhoneNumber" class="form-control" id="" ng-model="company.mailing_address.phone_number" placeholder="Phone Number" required>
+                            <div class="errorcontainer"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Phone Number is required.</div>
+                        </div>
+<!--                        <div class="form-group">
+                            <div class="phone--left">
+                                <label for="two">Phone number</label>
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <label class="registration--select">
+                                            <select class="form-control country-code" id="" ng-model="company.mailing_address.country_code" required>
+                                                <option value="+1">CA</option>
+                                                <option value="+1">US</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <input type="tel" name="mailingPhoneNumber" class="form-control phone--number" id="" ng-model="company.mailing_address.phone_number" required>
+                                </div>
+                                <div class="error--container" ng-show="companyDetailsForm2.mailingPhoneNumber.$touched && companyDetailsForm2.mailingPhoneNumber.$error.required"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Phone number is required.</div>
+                            </div>
+                            <div class="phone--right">
+                                <label for="two">Ext.</label>
+                                <input class="form-control extention" id="" type="text" ng-model="company.mailing_address.extension">
+                                <div class="errorcontainer"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Error Message</div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>-->
+                        <div class="form-group">
+                            <div class="checkbox--gateway">
+                                <input type="checkbox" value="1" id="checkbox1" name="" ng-model="company.same_mailing_billing">
+                                <label for="checkbox1"></label>
+                                <span>My billing address is the same as my mailing address</span>
+                            </div>
+                        </div>
+                        <button class="gateway--button__large bdblue step--two__btn" ng-click="saveAndContinue('companyDetailsForm2')" ng-disabled="companyDetailsForm2.$invalid">Save and Continue</button>
+                    </form>
+                </div>
+                <!--Mailing address Section Ends-->
+                <!--Bililing address Section starts-->
+                <div class="col-md-12" id="step--two" ng-show="step == 2.7">
+                    <div class="alert alert-success companyDetailsForm3-msg companyDetailsForm3-success">
+                        <a href="" class="close" data-dismiss="alert" aria-label="close" ng-click="close('companyDetailsForm3-success')"> ×</a>
+                        Company Billing Address saved successfully.
+                    </div>
+                    <div class="alert alert-dismissible alert-danger companyDetailsForm3-msg companyDetailsForm3-error" role="alert">
+                        <button type="button" class="close" aria-label="Close" ng-click="close('companyDetailsForm3-error')">
+                          <span aria-hidden="true">×</span>
+                        </button>
+                        <div class="companyDetailsForm3-error-content"></div>
+                    </div>
+                    <form name="companyDetailsForm3">
+                        <h1>Billing Address</h1>
+                        <h3></h3>
+                        <div class="form-group">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Street Address</label>
+                            <input type="text" class="form-control" id="" placeholder="Street Address" ng-model="company.billing_address.address1" required>
+                            <div class="errorcontainer"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Street Address is required.</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">City</label>
+                            <input type="text" class="form-control" id="" placeholder="City" ng-model="company.billing_address.city" >
+                            <div class="errorcontainer" ng-show="false"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>City is required.</div>
+                        </div>
+                        <div class="form-group">
+                          <div class="phone--left">
+                            <label for="two">Country</label>
+                            <div class="input-group">
+                              <div class="input-group-btn">
+                                <label class="country--select">
+                                  <select name="billingCountry" id="countries2" class="form-control countries" ng-model="company.billing_address.country" required  ng-change="emptyState(company.billing_address)">
+                                    <option value="">Select a Country</option>
+                                    <option ng-repeat="c in countryList" value="{{c.value}}">{{c.key}}</option>
+                                  </select>
+                                </label>
+                              </div>
+                            </div>
+                            <div class="error--container" ng-show="companyDetailsForm3.billingCountry.$touched && companyDetailsForm3.billingCountry.$error.required"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Country is required.</div>
+                          </div>
+                          <div class="phone--right">
+                            <label for="two">State</label>
+                            <div class="input-group">
+                              <div class="input-group-btn">
+                                <label class="country--select" ng-if="company.billing_address.country == 'US' || company.billing_address.country == 'CA'">
+                                    <select name="billingState" id="countries2" class="form-control state" ng-model="company.billing_address.state" required>
+                                        <option value="">Select a State</option>
+                                        <option ng-repeat="stateValue in getStateByCountry(company.billing_address.country)" value='{{stateValue.value}}' ng-selected="company.billing_address.state==stateValue.value">{{stateValue.value}}</option>
+                                    </select>
+                                </label>
+                                <input ng-if="company.billing_address.country != 'US' && company.billing_address.country != 'CA'" type="text" name="billingStateInput" id="countries2" class="form-control form--control__gateway state" ng-model="company.billing_address.state" required/>
+                              </div>
+                            </div>
+                            <div class="error--container" ng-show="(companyDetailsForm3.billingState.$touched && companyDetailsForm3.billingState.$error.required) || (companyDetailsForm3.billingStateInput.$touched && companyDetailsForm3.billingStateInput.$error.required)"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>State is required.</div>
+                          </div>
+                          <div class="clearfix"></div>
+                        </div>
+                        <div class="form-group">
+                          <label for="one">Zip Code</label>
+                          <input type="text" class="form-control zipcode" placeholder="Zip Code" id="" ng-model="company.billing_address.postal_code">
+                          <span class="errorcontainer"><i class="fa fa-exclamation-triangle fa-1"></i>Zip Code is required.</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="two">Phone Number</label>
+                            <input type="tel" name="billingPhoneNumber" class="form-control" id="" ng-model="company.billing_address.phone_number" placeholder="Phone Number" required>
+                            <div class="errorcontainer"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Phone Number is required.</div>
+                        </div>
+<!--                        <div class="form-group">
+                            <div class="phone--left">
+                                <label for="two">Phone number</label>
+                                <div class="input-group">
+                                    <div class="input-group-btn">
+                                        <label class="registration--select">
+                                            <select class="form-control country-code" id="" ng-model="company.billing_address.country_code" required>
+                                                <option value="+1">CA</option>
+                                                <option value="+1">US</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <input type="tel" name="billingPhoneNumber" class="form-control phone--number" id="" ng-model="company.billing_address.phone_number" required>
+                                </div>
+                                <div class="error--container" ng-show="companyDetailsForm3.billingPhoneNumber.$touched && companyDetailsForm3.billingPhoneNumber.$error.required"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Phone number is required.</div>
+                            </div>
+                            <div class="phone--right">
+                                <label for="two">Ext.</label>
+                                <input class="form-control extention" id="" type="text" ng-model="company.billing_address.extension">
+                                <div class="errorcontainer"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Error Message</div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>-->
+
+                        <button class="gateway--button__large bdblue step--two__btn" ng-click="saveAndContinue('companyDetailsForm3')" ng-disabled="companyDetailsForm3.$invalid">Save and Continue</button>
+                    </form>
+                </div>
+                <!--Billing address Section ends-->
+                <!--Agreement Section Starts-->
+                <div class="col-md-12" id="step--three" ng-show="step == 3">
+
+                    <div class="alert alert-dismissible alert-danger contractForm-msg contractForm-error" role="alert">
+                        <button type="button" class="close" aria-label="Close" ng-click="close('contractForm-error')">
+                          <span aria-hidden="true">×</span>
+                        </button>
+                        <div class="contractForm-error-content"></div>
+                    </div>
+                    <form name="contractForm">
+                        <h1>You’re almost done</h1>
+                        <h3>Please take a moment to review the Gateway Supply Chain Services Portal Terms of Use.</h3>
+<!--                        <div class="gateway--agreement__box" ng-include="'contract/gwtou.html'">
+
+
+                        </div>-->
+                        <iframe class="gateway--agreement__box" src="policy/termsofuse.html" style="width: 100%; height: 260px;">
+
+                        </iframe>
+                        <div class="download--agreement__btnbox">
+                            <a class="download--agreement__btn" ng-click="downloadAgreement()">Download Agreement</a>
+                        </div>
+                        <div class="checkbox--container">
+                            <div class="checkbox">
+                                <input type="checkbox" id="checkbox2" name="signedAgreement" ng-model="company.signed_agreement" required>
+                                <label for="checkbox2" class="fix"></label>
+                                <span>By checking this box you agree to the Gateway Terms</span>
+                            </div>
+                        </div>
+                        <button class="gateway--button__large bdblue step--three__btn" ng-click="saveAndContinue('contractForm')" ng-disabled="contractForm.$invalid">Complete Account Setup</button>
+                    </form>
+                </div>
+                <!--Agreement Section Ends-->
+            </div>
+            <!--Registration Ends-->
+        </div>
+    </div>
+</div>

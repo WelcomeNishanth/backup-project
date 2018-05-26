@@ -1,0 +1,476 @@
+<div ng-show="requestQuoteInProgress || pageLoadInProgress">
+    <div class="loading--gateway" style="display: block">
+        <div class="icon-sent"></div>
+    </div>
+</div>
+<div class="gateway--wrapper__medium white subcontent">
+    <div class="container-fluid">
+        <form name="requestForQuoteForm" >
+            <h1>Request Quote</h1>
+            <p>For outbound shipments within North America, please fill out the form below. For shipments outside US and Canada, please send an email to <a href="mailto:rates@gatewaysupplychain.com">rates@gatewaysupplychain.com</a> or call us at 1-855-727-4283.</p>
+            <div class="row gateway--quotes__locationdetails">
+                <div class="alert alert-dismissible alert-danger requestForQuoteForm-msg requestForQuoteForm-error" role="alert">
+                    <button type="button" class="close" aria-label="Close" ng-click="close('requestForQuoteForm-error')">
+                        <span aria-hidden="true">x</span>
+                    </button>
+                    <div class="requestForQuoteForm-error-content"></div>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                    <h2>From Location</h2>
+                    <div class="form-group min-height">
+                        <label for="two">Zip Code</label>
+                        <input type="text" class="form-control zip angular-error" id="originLocationPostalCode" placeholder="Zip Code" ng-model="quote.originLocation.postalCode" name="originLocationPostalCode" required ng-blur="getAddress(quote.originLocation)" onkeypress="return isAlphaNumeric(event)" ng-change="resetValidZipCode(quote.originLocation)">
+                        <span class="errorcontainer" ng-show="requestForQuoteForm.originLocationPostalCode.$touched && requestForQuoteForm.originLocationPostalCode.$error.required"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Zip Code is required</span>
+                        <input type="hidden" name="orginLocationIsValidPostalCode" ng-model="quote.originLocation.isValidPostalCode" required/>
+                        <span class="error--container" ng-show="requestForQuoteForm.originLocationPostalCode.$touched && requestForQuoteForm.orginLocationIsValidPostalCode.$error.required"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Please provide a valid Zip Code.</span>
+                    </div>
+                    <div class="form-group min-height">
+                        <label for="one">Country</label>
+                        <label class="quote--select">
+                            <select class="form-control" id="originLocationCountry" ng-model="quote.originLocation.country" name="originLocationCountry" required>
+                                <option value="">Country</option>
+                                <option value="CA">Canada</option>
+                                <option value="US">United States</option>
+                            </select>
+                        </label>
+                        <span class="error--container" ng-show="requestForQuoteForm.originLocationCountry.$touched && requestForQuoteForm.originLocationCountry.$error.required"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Country is required</span>
+                    </div>
+                    <div class="form-group min-height">
+                        <label for="one">State</label>
+                        <input type="text" class="form-control" id="originLocationState" placeholder="State" ng-model="quote.originLocation.state" name="originLocationState" required>
+                        <span class="errorcontainer"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>State is required</span>
+                    </div>
+
+                    <div class="form-group min-height">
+                        <label for="three">City</label>
+                        <!--                    <small class="pull-right">Optional</small>-->
+                        <input type="text" class="form-control" id="originLocationCity" placeholder="City" ng-model="quote.originLocation.city" name="originLocationCity" ng-show="quote.originLocation.cities == null" required>
+                        <span class="errorcontainer"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>City is required</span>
+                        <label class="quote--select" ng-if="quote.originLocation.cities != null && quote.originLocation.cities.length > 0">
+                            <select class="form-control" id="originLocationCities" ng-model="quote.originLocation.city" name="originLocationCity" required>
+                                <option ng-repeat="cityVal in quote.originLocation.cities" value="{{cityVal}}" ng-selected="quote.originLocation.city == cityVal">{{cityVal}}</option>
+                            </select>
+                        </label>
+                        <!--<span class="errorcontainer"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>City is required</span>-->
+                    </div>
+
+                    <div class="form-group min-height">
+                        <label for="one">Location Type</label>
+                        <label class="quote--select">
+                            <select class="form-control" id="originLocationType" ng-model="quote.originLocation.location_type" name="originLocationType" required>
+                                <option value="">Location Type</option>
+                                <option value="residential">Residential</option>
+<!--                                <option value="commercial">Commercial</option>-->
+                                <option value="commercial-nodock">Commercial (No Dock)</option>
+                                <option value="commercial-hasdock">Commercial (With Dock)</option>
+                                <option value="limited-access">Limited-Access</option>
+                            </select>
+                        </label>
+                        <span class="error--container" ng-show="requestForQuoteForm.originLocationType.$touched && requestForQuoteForm.originLocationType.$error.required"> <i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Location Type is required</span>
+                    </div>
+
+                    <!-- <div class="form-group min-height">
+
+                        <label for="one">Building Type</label>
+                        <label class="quote--select">
+                          <select class="form-control" id="one" ng-model="" name="" required>
+                              <option value="">Apartment</option>
+                              <option value="CA">House</option>
+                          </select>
+                        </label>
+                        <span class="error--container" ng-show="">
+                          <i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Building type required</span>
+
+                    </div> -->
+
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                    <h2>To Location</h2>
+                    <div class="form-group min-height">
+                        <label for="five">Zip Code</label>
+                        <input type="text" class="form-control zip angular-error" id="destinationLocationPostalCode" placeholder="Zip Code" ng-model="quote.destinationLocation.postalCode" name="destinationLocationPostalCode" required ng-blur="getAddress(quote.destinationLocation)"  onkeypress="return isAlphaNumeric(event)"  ng-change="resetValidZipCode(quote.destinationLocation)"/>
+                        <span class="errorcontainer" ng-show="requestForQuoteForm.destinationLocationPostalCode.$touched && requestForQuoteForm.destinationLocationPostalCode.$error.required"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Zip Code is required</span>
+                        <input type="hidden" name="destinationLocationIsValidPostalCode" ng-model="quote.destinationLocation.isValidPostalCode" required/>
+                        <span class="error--container" ng-show="requestForQuoteForm.destinationLocationPostalCode.$touched && requestForQuoteForm.destinationLocationIsValidPostalCode.$error.required"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Please provide a valid Zip Code.</span>
+                    </div>
+                    <div class="form-group min-height">
+                        <label for="four">Country</label>
+                        <label class="quote--select">
+                            <select class="form-control" id="destinationLocationCountry" ng-model="quote.destinationLocation.country" name="destinationLocationCountry" required>
+                                <option value="">Country</option>
+                                <option value="CA">Canada</option>
+                                <option value="US">United States</option>
+                            </select>
+                        </label>
+                        <span class="error--container" ng-show="requestForQuoteForm.destinationLocationCountry.$touched && requestForQuoteForm.destinationLocationCountry.$error.required"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Country is required</span>
+                    </div>
+                    <div class="form-group min-height">
+                        <label for="six">State</label>
+                        <input type="text" class="form-control" id="destinationLocationState" placeholder="State" ng-model="quote.destinationLocation.state" name="destinationLocationState" required>
+                        <span class="errorcontainer"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>State is required</span>
+                    </div>
+
+                    <div class="form-group min-height">
+                        <label for="six">City</label>
+                        <!--<small class="pull-right">Optional</small>-->
+                        <input type="text" class="form-control" id="destinationLocationCity" placeholder="City" ng-model="quote.destinationLocation.city" name="destinationLocationCity" ng-show="quote.destinationLocation.cities == null" required>
+                        <span class="errorcontainer"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>City is required</span>
+                        <label class="quote--select" ng-if="quote.destinationLocation.cities != null && quote.destinationLocation.cities.length > 0">
+                            <select class="form-control" id="destinationLocationCities" ng-model="quote.destinationLocation.city" name="destinationLocationCity" required>
+                                <option ng-repeat="cityVal in quote.destinationLocation.cities" value="{{cityVal}}" ng-selected="quote.destinationLocation.city == cityVal">{{cityVal}}</option>
+                            </select>
+                        </label>
+
+                    </div>
+
+                    <div class="form-group min-height">
+                        <label for="one">Location Type</label>
+                        <label class="quote--select">
+                            <select class="form-control" id="destinationLocationType" ng-model="quote.destinationLocation.location_type" name="destinationLocationType" required>
+                                <option value="">Location Type</option>
+                                <option value="residential">Residential</option>
+                                <option value="commercial-nodock">Commercial (No Dock)</option>
+                                <option value="commercial-hasdock">Commercial (With Dock)</option>
+                                <option value="limited-access">Limited-Access</option>
+                            </select>
+                        </label>
+                        <span class="error--container" ng-show="requestForQuoteForm.destinationLocationType.$touched && requestForQuoteForm.destinationLocationType.$error.required"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Location Type is required</span>
+                    </div>
+
+                </div>
+            </div>
+            <div class="gateway--spacer"></div>
+            <div class="row gateway--quotes__shipmentdetails">
+                <div class="col-xs-12">
+                    <h2>Shipment Details</h2>
+                </div>
+                <div class="col-xs-12 col-sm-4">
+                    <!-- Commented as we are not supporting this on the API level -->
+                    <!--                <div class="form-group">
+                    <label for="seven">Pick-up date</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="seven" placeholder="Pick-up date">
+                        <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                    </div>
+                </div>-->
+                </div>
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label >Product Details</label>
+                        <div class="gateway--quotes__commoditypanel">
+                            <div class="gateway--quotes__commoditypanelwrapper" ng-repeat="commodity in quote.freightItems">
+                                <a href="javascript:void(0);" class="pull-right" style="font-size: 14px; margin-bottom: 10px;" ng-show="commodity.freightItemId > 1" ng-click="removeFromFreightItems(commodity.freightItemId)"><i class="fa fa-close"></i></a>
+                                <div class="clearfix"></div>
+                                <div class="gateway--error" style="display: none">
+                                    {{minValueErrors}} {{checkForValueError(commodity.freightItemId)}}
+                                </div>
+                                <div class="gateway--error"
+                                     ng-show="(checkForValueError(commodity.freightItemId)) || ((requestForQuoteForm.quantity{{commodity.freightItemId}}.$error.required || requestForQuoteForm.quantity{{commodity.freightItemId}}.$error.pattern) && requestForQuoteForm.quantity{{commodity.freightItemId}}.$touched) ||
+                                                         (requestForQuoteForm.packaging{{commodity.freightItemId}}.$error.required && (requestForQuoteForm.packaging{{commodity.freightItemId}}.$touched || showUnitError[commodity.freightItemId])) ||
+                                                                                             ((requestForQuoteForm.length{{commodity.freightItemId}}.$error.required || requestForQuoteForm.length{{commodity.freightItemId}}.$error.pattern) && requestForQuoteForm.length{{commodity.freightItemId}}.$touched) ||
+                                                                                                                                                 ((requestForQuoteForm.width{{commodity.freightItemId}}.$error.required || requestForQuoteForm.width{{commodity.freightItemId}}.$error.pattern) && requestForQuoteForm.width{{commodity.freightItemId}}.$touched) ||
+                                                                                                                                                                                                                     ((requestForQuoteForm.height{{commodity.freightItemId}}.$error.required || requestForQuoteForm.height{{commodity.freightItemId}}.$error.pattern) && requestForQuoteForm.height{{commodity.freightItemId}}.$touched) ||
+                                                                                                                                                                                                                                                                                                         ((requestForQuoteForm.weight{{commodity.freightItemId}}.$error.required || requestForQuoteForm.weight{{commodity.freightItemId}}.$error.pattern) && requestForQuoteForm.weight{{commodity.freightItemId}}.$touched) ||
+                                                                                                                                                                                                                                                                                                                                                                                                             (requestForQuoteForm.classCode{{commodity.freightItemId}}.$error.required && requestForQuoteForm.classCode{{commodity.freightItemId}}.$touched) || ((requestForQuoteForm.description{{commodity.freightItemId}}.$error.maxlength || requestForQuoteForm.description{{commodity.freightItemId}}.$error.required) && requestForQuoteForm.description{{commodity.freightItemId}}.$touched)">
+                                    <span ng-show="requestForQuoteForm.description{{commodity.freightItemId}}.$error.maxlength && requestForQuoteForm.description{{commodity.freightItemId}}.$touched"> Maximum 250 characters allowed for Product Description.</span>
+                                    <span ng-show="requestForQuoteForm.description{{commodity.freightItemId}}.$error.required && requestForQuoteForm.description{{commodity.freightItemId}}.$touched"> Product Description is required.</span>
+                                    <span ng-show="requestForQuoteForm.quantity{{commodity.freightItemId}}.$error.required && requestForQuoteForm.quantity{{commodity.freightItemId}}.$touched">Quantity is required.</span>
+                                    <span ng-show="requestForQuoteForm.quantity{{commodity.freightItemId}}.$error.pattern && requestForQuoteForm.quantity{{commodity.freightItemId}}.$touched">Only numbers allowed for Quantity.</span>
+                                    <span ng-show="requestForQuoteForm.quantity{{commodity.freightItemId}}.$error.zerovalue && requestForQuoteForm.quantity{{commodity.freightItemId}}.$touched">zerovalue error Quantity.</span>
+                                    <span ng-show="requestForQuoteForm.packaging{{commodity.freightItemId}}.$error.required && (requestForQuoteForm.packaging{{commodity.freightItemId}}.$touched || showUnitError[commodity.freightItemId])"> Unit is required.</span>
+                                    <span ng-show="requestForQuoteForm.length{{commodity.freightItemId}}.$error.required && requestForQuoteForm.length{{commodity.freightItemId}}.$touched"> Length is required.</span>
+                                    <span ng-show="requestForQuoteForm.length{{commodity.freightItemId}}.$error.pattern && requestForQuoteForm.length{{commodity.freightItemId}}.$touched"> Only numbers with up to two decimals are allowed for Length.</span>
+                                    <span ng-show="requestForQuoteForm.width{{commodity.freightItemId}}.$error.required && requestForQuoteForm.width{{commodity.freightItemId}}.$touched"> Width is required.</span>
+                                    <span ng-show="requestForQuoteForm.width{{commodity.freightItemId}}.$error.pattern && requestForQuoteForm.width{{commodity.freightItemId}}.$touched"> Only numbers with up to two decimals are allowed for Width.</span>
+                                    <span ng-show="requestForQuoteForm.height{{commodity.freightItemId}}.$error.required && requestForQuoteForm.height{{commodity.freightItemId}}.$touched"> Height is required.</span>
+                                    <span ng-show="requestForQuoteForm.height{{commodity.freightItemId}}.$error.pattern && requestForQuoteForm.height{{commodity.freightItemId}}.$touched"> Only numbers with up to two decimals are allowed for Height.</span>
+                                    <span ng-show="requestForQuoteForm.weight{{commodity.freightItemId}}.$error.required && requestForQuoteForm.weight{{commodity.freightItemId}}.$touched"> Weight is required.</span>
+                                    <span ng-show="requestForQuoteForm.weight{{commodity.freightItemId}}.$error.pattern && requestForQuoteForm.weight{{commodity.freightItemId}}.$touched"> Only numbers with up to two decimals are allowed for Weight.</span>
+                                    <span ng-show="requestForQuoteForm.classCode{{commodity.freightItemId}}.$error.required && requestForQuoteForm.classCode{{commodity.freightItemId}}.$touched"> Class Code is required.</span>
+
+                                    <span ng-show="minValueErrors.quantity{{commodity.freightItemId}}">Quantity should be greater than 0.</span>
+                                    <span ng-show="minValueErrors.length{{commodity.freightItemId}}">Length should be greater than 0.</span>
+                                    <span ng-show="minValueErrors.width{{commodity.freightItemId}}">Width should be greater than 0.</span>
+                                    <span ng-show="minValueErrors.height{{commodity.freightItemId}}">Height should be greater than 0.</span>
+                                    <span ng-show="minValueErrors.weight{{commodity.freightItemId}}">Weight should be greater than 0.</span>
+                                    
+                                </div>
+                                    <div class="form-group product--description__field">
+                                      <label for="eight">Product Description</label>
+                                      <textarea class="form-control" rows="2" id="comment" name="description{{commodity.freightItemId}}" ng-model="commodity.description" ng-maxlength="250" required></textarea>
+                                    </div>
+                                    <div class="form-group quantity">
+                                    <label for="eight">Quantity</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control quantity--field" aria-label="..." placeholder="Quantity" ng-model="commodity.quantity" required name="quantity{{commodity.freightItemId}}" ng-pattern="/^[0-9]+$/" ng-blur="enableUnitError(commodity.freightItemId, true)" ng-change="onInputChange(commodity, 'quantity')">
+                                        <div class="input-group-btn">
+                                            <label class="quantity--label">Handled Units</label>
+                                            <label class="quote--select">
+                                                <select class="form-control item--quantity" id="eight" ng-model="commodity.unit" required name="packaging{{commodity.freightItemId}}" ng-class="{'error--border': showUnitError[commodity.freightItemId]}" ng-focus="enableUnitError(commodity.freightItemId, false)">
+                                                    <option value="">Select a Unit</option>
+                                                    <option value="bundle">Bundle</option>
+                                                    <option value="box">Box</option>
+                                                    <option value="carton">Carton</option>
+                                                    <option value="crate">Crate</option>
+                                                    <option value="drum">Drum</option>
+                                                    <option value="item">Item</option>
+                                                    <option value="pail">Pail</option>
+                                                    <option value="pallet">Pallet</option>
+                                                    <option value="roll">Roll</option>
+                                                    <option value="tube">Tube</option>
+                                                </select>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group diamensions">
+                                    <label for="seven">Dimensions</label>
+                                    <div class="lwh--wrapper">
+                                        <div class="length">
+                                            <div class="input-group">
+
+                                                <input type="text" class="form-control" id="seven" placeholder="Length" ng-model="commodity.dimensions.length" required name="length{{commodity.freightItemId}}" ng-pattern="/^[0-9]+$|^[0-9]*\.[0-9]{1,2}$/" ng-change="onInputChange(commodity, 'length')" ng-blur="autoFillClassCode(commodity)">
+                                                <span class="input-group-addon"><strong>L</strong></span>
+                                            </div>
+                                        </div>
+                                        <div class="width">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="seven" placeholder="Width" ng-model="commodity.dimensions.width" required name="width{{commodity.freightItemId}}" ng-pattern="/^[0-9]+$|^[0-9]*\.[0-9]{1,2}$/" ng-change="onInputChange(commodity, 'width')" ng-blur="autoFillClassCode(commodity)">
+                                                <span class="input-group-addon"><strong>W</strong></span>
+                                            </div>
+                                        </div>
+                                        <div class="height">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" id="seven" placeholder="Height" ng-model="commodity.dimensions.height" required name="height{{commodity.freightItemId}}" ng-pattern="/^[0-9]+$|^[0-9]*\.[0-9]{1,2}$/" ng-change="onInputChange(commodity, 'height')" ng-blur="autoFillClassCode(commodity)">
+                                                <span class="input-group-addon"><strong>H</strong></span>
+                                            </div>
+                                        </div>
+                                        <div class="inch">
+                                          <label class="quote--select">
+                                              <select class="form-control" id="four" ng-model="commodity.dimensions.unitDisplay">
+                                                  <option value="Inches" ng-selected="commodity.dimensions.unitDisplay=='Inches'">Inches</option>
+                                              </select>
+                                          </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="form-group weight">
+                                    <label for="eight"></label>
+                                    <label class="quote--select">
+                                        <select class="form-control" id="four" ng-model="commodity.dimensions.unitDisplay">
+                                            <option value="Inches" ng-selected="commodity.dimensions.unitDisplay=='Inches'">Inches</option>
+                                        </select>
+                                    </label>
+                                </div> -->
+                                <div class="form-group weight--perunit">
+                                    <label for="seven">Weight per Unit</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="six" placeholder="Weight" ng-model="commodity.weight.weight" required name="weight{{commodity.freightItemId}}" ng-pattern="/^[0-9]+$|^[0-9]*\.[0-9]{1,2}$/" ng-change="onInputChange(commodity, 'weight')" ng-blur="autoFillClassCode(commodity)">
+                                        <div class="input-group-btn">
+                                            <label class="quote--select">
+                                                <select class="form-control item--quantity ng-invalid-required" ng-model="commodity.weight.unitDisplay">
+                                                    <option value="Pounds" ng-selected="commodity.weight.unitDisplay=='Pounds'">Pounds</option>
+                                                </select>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="total--weight__perpro">
+                                        <span>TOTAL WEIGHT</span>
+                                        <strong ng-show="commodity.weight.weight && commodity.quantity">{{commodity.weight.weight * commodity.quantity| number : 2}} {{commodity.weight.unitDisplay}}</strong>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="form-group classcodes">
+                                    <label for="eight">Class Code</label>
+                                    <label class="quote--select">
+                                        <select class="form-control" id="four" ng-model="commodity.classCode" required name="classCode{{commodity.freightItemId}}">
+                                            <option value="">Select a Class Code</option>
+                                            <option value="50.00">50.00</option>
+                                            <option value="55.00">55.00</option>
+                                            <option value="60.00">60.00</option>
+                                            <option value="65.00">65.00</option>
+                                            <option value="70.00">70.00</option>
+                                            <option value="77.50">77.50</option>
+                                            <option value="85.00">85.00</option>
+                                            <option value="92.50">92.50</option>
+                                            <option value="100.00">100.00</option>
+                                            <option value="110.00">110.00</option>
+                                            <option value="125.00">125.00</option>
+                                            <option value="150.00">150.00</option>
+                                            <option value="175.00">175.00</option>
+                                            <option value="200.00">200.00</option>
+                                            <option value="250.00">250.00</option>
+                                            <option value="300.00">300.00</option>
+                                            <option value="400.00">400.00</option>
+                                            <option value="500.00">500.00</option>
+                                        </select>
+                                    </label>
+                                    <!--<a href="javascript: void(0);" title="Class Code" data-html="true" data-placement="bottom" data-toggle="popover" data-trigger="focus" data-content="Class Code required by carriers to transport this product in Less Than Truckload (LTL) order configurations.">Whats this?</a>-->
+                                    <a data-toggle="modal" data-target="#class-code" ng-click="populateValueOnClassCode(commodity, commodity.freightItemId)">Class Code Calculator</a>
+                                </div>
+                                <div class="form-group nmfc">
+                                    <label for="seven">NMFC code</label>
+                                    <small class="pull-right">Optional</small>
+                                    <input type="text" class="form-control" id="six" placeholder="NMFC code" ng-model="commodity.nmfc" name="nmfcCode{{commodity.freightItemId}}">
+                                    <a href="javascript: void(0);" title="NMFC Code" data-html="true" data-placement="bottom" data-toggle="popover" data-trigger="focus" data-content="The Standard for Freight Identification and Classification. The National Motor Freight Classification&reg; (NMFC&reg;) is a standard that provides a comparison of commodities moving in interstate, intrastate and foreign commerce." bs-popover>Whats this?</a>
+                                </div>
+                                <div class="form-group hazardeous-material" ng-show="false">
+                                    <label >
+                                        <input type="checkbox" ng-model="commodity.hazardous"> Yes, this contains hazardous material.
+                                    </label>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+
+                        </div>
+                        <a class="add-commodity" href="javascript: void(0);" ng-click="addCommodity()">+Add another product</a>
+                    </div>
+                </div>
+            </div>
+            <div class="gateway--spacer"></div>
+            <!-- Commenting this section as we dont have the API support at this point -->
+            <!--        <div class="row gateway--quotes__additionalservices">
+            <div class="col-xs-12">
+                <h2>Additional Services</h2>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+                <ul class="shippickup-options">
+                    <li>
+                        <strong>Pickup Options</strong>
+                    </li>
+                    <li>
+                        <label><input type="checkbox"> Option One</label>
+                    </li>
+                    <li>
+                        <label><input type="checkbox"> Option Two</label>
+                    </li>
+                    <li>
+                        <label><input type="checkbox"> Option Three</label>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+                <ul class="shippickup-options">
+                    <li>
+                        <strong>Delivery Options</strong>
+                    </li>
+                    <li>
+                        <label><input type="checkbox"> Option One</label>
+                    </li>
+                    <li>
+                        <label><input type="checkbox"> Option Two</label>
+                    </li>
+                    <li>
+                        <label><input type="checkbox"> Option Three</label>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+                <ul class="shippickup-options">
+                    <li>
+                        <strong>Others</strong>
+                    </li>
+                    <li>
+                        <label><input type="checkbox"> Option One</label>
+                    </li>
+                    <li>
+                        <label><input type="checkbox"> Option Two</label>
+                    </li>
+                    <li>
+                        <label><input type="checkbox"> Option Three</label>
+                    </li>
+                </ul>
+            </div>
+        </div>-->
+            <div class="gateway--spacer"></div>
+            <button class="gateway--button__small blue mar--top__tw" ng-click="requestQuote()" ng-disabled="requestQuoteInProgress">{{estimateIdToUse?'Request New Quote':'Request Quote'}}</button>
+        <p>Reach us at <a href="mailto:rates@gatewaysupplychain.com">rates@gatewaysupplychain.com</a> or 1-855-727-4283 (Toll-free) if you need help with a quote.</p>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Starts Here -->
+<div class="modal fade gateway--modal" id="class-code" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog gateway--content__modal" role="document">
+        <div class="modal-content">
+            <div class="alert alert-dismissible alert-danger calculateClassCodeForm-msg calculateClassCodeForm-error" role="alert">
+                <button type="button" class="close" aria-label="Close" ng-click="close('calculateClassCodeForm-error')">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <div class="calculateClassCodeForm-error-content"></div>
+            </div>
+            <form name="calculateClassCodeForm" >
+                <div class="modal-header header">
+                    <h1 class="text-center">Class Code Calculator</h1>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-center">Provide these details to help us estimate what your Class Code will be</p>
+                    <div class="form-group diamensions">
+                        <label for="seven">Dimensions (<span>Inches</span>)</label>
+                        <div class="lwh--wrapper">
+                            <div class="length">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="seven" placeholder="Length" ng-model="classCode.dimensions.length">
+                                    <span class="input-group-addon"><strong>L</strong></span>
+                                </div>
+                            </div>
+                            <div class="width">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="seven" placeholder="Width" ng-model="classCode.dimensions.width">
+                                    <span class="input-group-addon"><strong>W</strong></span>
+                                </div>
+                            </div>
+                            <div class="height">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="seven" placeholder="Height" ng-model="classCode.dimensions.height">
+                                    <span class="input-group-addon"><strong>H</strong></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group weight">
+                        <label for="seven">Weight per unit (Pounds)</label>
+                        <input type="text" class="form-control" id="six" placeholder="Weight" ng-model="classCode.weight.weight">
+                    </div>
+                </div>
+                <div class="modal-footer padding--none">
+                    <button class="gateway--button__small blue mar--top__tw" ng-click="calculateClassCode()" ng-show="classCode.estimate == null">Calculate</button>
+                    <button class="gateway--button__small blue mar--top__tw" ng-click="calculateClassCode()" ng-show="classCode.estimate != null">Recalculate</button>
+                    <div class="estimate" ng-show="classCode.estimate != null">
+                        <p>Your estimated Class Code</p>
+                        <div class="estimate--class__code">{{classCode.estimate}}</div>
+                    </div>
+                    <div ng-show="classCode.estimate != null">
+                        <button class="gateway--button__small darkgrey mar--top__tw" data-dismiss="modal" aria-label="Close">Cancel</button>
+                        <button class="gateway--button__small blue mar--top__tw" ng-click="useEstimate()" ng-disabled="classCode.estimate <= 0">Use this estimate</button>
+                    </div>
+                    <div class="clearfix"></div>
+                    <small>*If you use this estimate any changes made to dimensions </br>will also be updated.</small>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal Ends Here -->
+
+<!-- Modal Starts Here -->
+<div class="modal fade gateway--modal" id="success-modal">
+    <div class="modal-dialog gateway--content__modal" role="document">
+        <div class="modal-content">
+            <div class="modal-header header">
+                <h1 class="text-center">Request Quote</h1>
+
+            </div>
+            <div class="modal-body">
+                <p>Thank you for the opportunity! One of our representatives will be in touch with you shortly to review this rate request.</p>
+            </div>
+            <div class="modal-footer">
+                <a class="gateway--button__medium bdblue bdblue btn-request" ng-click="goToQuotes()">OK</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Ends Here -->

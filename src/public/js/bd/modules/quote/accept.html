@@ -1,0 +1,386 @@
+<div ng-show="dataLoadInProgress || acceptQuoteInProgress">
+    <div class="loading--gateway" style="display: block">
+        <div class="icon-sent"></div>
+    </div>
+</div>
+
+<!-- Modal Starts Here -->
+<div class="modal fade gateway--modal" id="terminalDropLocationModal" data-backdrop="static"  data-keyboard="false">
+    <div class="modal-dialog gateway--content__modal" role="document">
+        <div class="modal-content  checkout--modal">
+            <div class="modal-header header">
+                <h1 class="text-center">Drop Off Location</h1>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+              <p ng-if="deliveryOptions['0'] && deliveryOptions['0']['drop_off_location']">
+                    {{deliveryOptions['0']['drop_off_location']['addressLine1']}}<br ng-if="deliveryOptions['0']['drop_off_location']['addressLine1']"/>
+                    {{deliveryOptions['0']['drop_off_location']['addressLine2']}}<br ng-if="deliveryOptions['0']['drop_off_location']['addressLine2']"/>
+
+                    {{deliveryOptions['0']['drop_off_location']['city']}}<br ng-if="deliveryOptions['0']['drop_off_location']['city']"/>
+                    {{deliveryOptions['0']['drop_off_location']['state']}} {{deliveryOptions['0']['drop_off_location']['postalCode']}}<br/>
+                    {{countryValues[deliveryOptions['0']['drop_off_location']['country']]}}<br/>
+                    {{deliveryOptions['0']['drop_off_location']['contact']['phone']}}<br ng-if="deliveryOptions['0']['drop_off_location']['contact']['phone']"/>
+                </p>
+            </div>
+            <!-- <div class="modal-footer">
+              <button class="gateway--button__medium bdblue bdblue">Request Access</button>
+              <small>Please note, this could take a couple days.</small>
+            </div> -->
+        </div>
+    </div>
+</div>
+<!-- Modal Ends Here -->
+<div class="gateway--wrapper__large__twocolumn transparent gateway--checkout">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="back-to"><a href="javascript: void(0)" ng-click="backToHome()"><i class="fa fa-arrow-left fa-1" aria-hidden="true"></i>Back to Quotes</a></div>
+        </div>
+
+        <div class="row row-offcanvas row-offcanvas-right">
+            <form name="acceptQuoteForm">
+                <!--Right Section Starts-->
+                <style>
+                    .gateway--tolocation .form-group,
+                    .gateway--fromlocation .form-group{
+                        min-height: 100px;
+                    }
+                </style>
+                <div class="alert alert-dismissible alert-danger acceptQuoteForm-msg acceptQuoteForm-error" role="alert">
+                    <button type="button" class="close" aria-label="Close" ng-click="close('acceptQuoteForm-error')">
+                      <span aria-hidden="true">×</span>
+                    </button>
+                    <div class="acceptQuoteForm-error-content"></div>
+                </div>
+                <div class="checkout--left__section white element">
+                    <div class="col-xs-12 col-md-12">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h1>Here are Your Shipping Options</h1>
+                            </div>
+                            <div class="col-md-6">
+                                <a class="greylink text-center" href="javascript: void(0)" ng-click="backToHome()">Complete later. Back to Quotes.</a>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row shipping--rate shipping--rate__bg " ng-repeat="o in quote.options" ng-class="selectedDeliveryType == o.type?'shipping--rate__bg___active':''">
+                                    <div class="shipping--form__group">
+                                        <div class="col-sm-12 col-md-12">
+                                            <div class="radio radio-info">
+                                                <input type="radio" name="selectedDeliveryType" id="{{o.type}}" value="{{o.type}}" ng-checked="selectedDeliveryType == o.type" ng-click="selectDeliveryType(o.type)">
+                                                  <label for="{{o.type}}">
+                                                    <div class="shipping--rate__optionleft">
+                                                      {{o.name}}
+                                                      <div class="est-delivery">{{o.transit_time}}</div>
+                                                      <div class="clearfix"></div>
+                                                      <small class="left" ng-if="o.type == 0">
+                                                          <!--Terminal-->
+                                                          If you choose this option you will need to drop your shipment items at <span ng-show="o.drop_off_location.city!=null && o.drop_off_location.city!=''">{{o.drop_off_location.city}}</span>, {{o.drop_off_location.state}}. <a data-toggle="modal" data-target="#terminalDropLocationModal">Click here</a> for full address.
+                                                      </small>
+                                                      <small class="left" ng-if="o.type == 1">
+                                                          <!--Lowest-->
+                                                          This option gives you the lowest shipping price which includes pickup and drop-off from your specified locations.
+                                                      </small>
+                                                      <small class="left" ng-if="o.type == 2">
+                                                          <!--Fastest-->
+                                                          This option will give you the fastest shipping time which includes pickup and drop-off from your specified locations.
+                                                      </small>
+                                                      <small class="left" ng-if="o.type == 4">
+                                                          <!--Lowest & Fastest-->
+                                                          This option includes pickup and drop off at your specified locations.
+                                                      </small>
+                                                      <small class="left" ng-if="o.type == 5">
+                                                          <!--Terminal-->
+                                                          If you choose this option you will need to drop your shipment items at <span ng-show="o.drop_off_location.city!=null && o.drop_off_location.city!=''">{{o.drop_off_location.city}}</span>, {{o.drop_off_location.state}}. <a data-toggle="modal" data-target="#terminalDropLocationModal">Click here</a> for full address.
+                                                      </small>
+                                                      <small class="left" ng-if="o.type == 6">
+                                                          <!--Terminal-->
+                                                          If you choose this option you will need to drop your shipment items at <span ng-show="o.drop_off_location.city!=null && o.drop_off_location.city!=''">{{o.drop_off_location.city}}</span>, {{o.drop_off_location.state}}. <a data-toggle="modal" data-target="#terminalDropLocationModal">Click here</a> for full address.
+                                                      </small>
+                                                    </div>
+                                                    <div class="shipping--rate__optionright">
+                                                      <div class="shipping--rate__rates">${{o.quote_rate| number : 2}}</div>
+
+                                                      <small ng-show="o.lift_gate && o.lift_gate != ''">
+                                                          Price includes Lift-gate
+                                                      </small>
+
+                                                    </div>
+                                                  </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="gateway--spacer mar--top__th"></div>
+
+                    <div class="col-xs-12 col-md-12 mar--top__th">
+                        <div class="row">
+                            <div class="col-md-6"><h1>Enter Your Shipping Details</h1></div>
+                            <div class="col-md-6"><a class="greylink" href="javascript: void(0)" ng-click="backToHome()">Complete later. Back to Quotes.</a></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-lg-6 gateway--fromlocation">
+                                <h2>From Location</h2>
+                                <div class="form-group">
+                                    <label for="two">Company Name</label><small class="pull-right">Optional</small>
+                                    <input type="text" class="form-control" id="" name="originContactCompanyName" ng-model="checkout.originLocation.contact.company">
+                                    <span class="errorcontainer"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="three">Name of Contact Person</label>
+                                    <input type="text" class="form-control" id="two" ng-model="checkout.originLocation.contact.name" name="originContactName" required>
+                                    <span class="errorcontainer"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Name is required</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="one">Street Address</label>
+                                    <input type="text" class="form-control" id="one" ng-model="checkout.originLocation.addressLine1" name="originAddress" required>
+                                    <div><span ng-show="checkout.originLocation.city && checkout.originLocation.city != ''">{{checkout.originLocation.city}},</span> {{checkout.originLocation.state}}, {{countryValues[checkout.originLocation.country]}} {{checkout.originLocation.postalCode}}</div>
+                                    <span class="error--container" ng-show="acceptQuoteForm.originAddress.$touched && acceptQuoteForm.originAddress.$error.required"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Address is required</span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="two">Phone Number</label>
+                                    <input type="tel" class="form-control" id="ten" ng-model="checkout.originLocation.contact.phone" name="originContactPhone" required>
+                                    <span class="errorcontainer"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Phone Number is required</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="two">Email</label><small class="pull-right">Optional</small>
+                                    <input type="email" class="form-control" id="" name="originContactEmail" ng-model="checkout.originLocation.contact.email">
+                                    <span class="error--container" ng-show="acceptQuoteForm.originContactEmail.$touched && acceptQuoteForm.originContactEmail.$error.email"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Please provide a valid Email.</span>
+                                </div>
+                                <!--                                <div class="form-group">
+                                    <div class="checkout--phone">
+                                        <div class="phone--left">
+                                            <label for="two">Phone number</label>
+                                             <input id="phone" class="phone--number form-control" type="tel">
+                                            <div class="input-group">
+                                                <div class="input-group-btn">
+                                                    <select class="form-control item--quantity country-code" id="eight" ng-model="checkout.originLocation.contact.countryCode" name="originCountryCode" required>
+                                                        <option value="+1">US</option>
+                                                        <option value="+1">CA</option>
+                                                    </select>
+                                                </div>
+                                                <input type="tel" class="form-control phone--number" id="ten" ng-model="checkout.originLocation.contact.phone" name="originContactPhone" required>
+                                            </div>
+                                            <span class="error--container" ng-show="acceptQuoteForm.originContactPhone.$touched && acceptQuoteForm.originContactPhone.$error.required"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Phone number is required</span>
+                                        </div>
+                                        <div class="phone--right">
+                                            <label for="two">Ext.</label>
+                                            <input class="form-control extention" id="four" type="text" ng-model="checkout.originLocation.contact.extension" name="originContactExtension">
+                                            <span class="errorcontainer"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Error Message</span>
+                                        </div>
+                                    </div>
+                                </div>-->
+                                <div class="form-group">
+                                    <label for="comment">Shipping Notes</label><small class="pull-right">Optional</small>
+                                    <textarea class="form-control" rows="4" id="five" ng-model="checkout.originLocation.shippingNotes" name="originShippingNotes"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-lg-6 gateway--tolocation">
+                                <h2>To Location</h2>
+                                <div class="form-group">
+                                    <label for="two">Company Name</label><small class="pull-right">Optional</small>
+                                    <input type="text" class="form-control" id="" name="destinationContactCompanyName" ng-model="checkout.destinationLocation.contact.company">
+                                    <span class="errorcontainer"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="six">Name of Contact Person</label>
+                                    <input type="text" class="form-control" id="seven" ng-model="checkout.destinationLocation.contact.name" name="destinationContactName" required>
+                                    <span class="errorcontainer"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Name is required</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="one">Street Address</label>
+                                    <input type="text" class="form-control" id="six" ng-model="checkout.destinationLocation.addressLine1" name="destinationAddress" required>
+                                    <div><span ng-show="checkout.destinationLocation.city && checkout.destinationLocation.city != ''">{{checkout.destinationLocation.city}},</span> {{checkout.destinationLocation.state}}, {{countryValues[checkout.destinationLocation.country]}} {{checkout.destinationLocation.postalCode}}</div>
+                                    <span class="error--container" ng-show="acceptQuoteForm.destinationAddress.$touched && acceptQuoteForm.destinationAddress.$error.required"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Address is required</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="two">Phone Number</label>
+                                    <input type="tel" class="form-control" id="ten" ng-model="checkout.destinationLocation.contact.phone" name="destinationContactPhone" required>
+                                    <span class="errorcontainer"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Phone Number is required</span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="two">Email</label><small class="pull-right">Optional</small>
+                                    <input type="text" class="form-control" id="" name="destinationContactEmail" ng-model="checkout.destinationLocation.contact.email">
+                                    <span class="error--container" ng-show="acceptQuoteForm.destinationContactEmail.$touched && acceptQuoteForm.destinationContactEmail.$error.email"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Please provide a valid Email.</span>
+                                </div>
+                                <!--                                <div class="form-group">
+                                    <div class="checkout--phone">
+                                        <div class="phone--left">
+                                            <label for="two">Phone number</label>
+                                             <input id="phone2" class="phone--number form-control" type="tel">
+                                            <div class="input-group">
+                                                <div class="input-group-btn">
+                                                    <select class="form-control item--quantity country-code" id="eight" ng-model="checkout.destinationLocation.contact.countryCode" name="destinationCountryCode" required>
+                                                        <option value="+1">US</option>
+                                                        <option value="+1">CA</option>
+                                                    </select>
+                                                </div>
+                                                <input type="tel" class="form-control phone--number" id="ten" ng-model="checkout.destinationLocation.contact.phone" name="destinationContactPhone" required>
+                                            </div>
+                                            <span class="error--container" ng-show="acceptQuoteForm.destinationContactPhone.$touched && acceptQuoteForm.destinationContactPhone.$error.required"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Phone number is required</span>
+                                        </div>
+                                        <div class="phone--right">
+                                            <label for="two">Ext.</label>
+                                            <input class="form-control extention"  type="text" id="" ng-model="checkout.destinationLocation.contact.extension">
+                                            <span class="errorcontainer"><i class="fa fa-exclamation-triangle fa-1" aria-hidden="true"></i>Error Message</span>
+                                        </div>
+                                    </div>
+                                </div>-->
+                                <div class="form-group">
+                                    <label for="comment">Shipping Notes</label><small class="pull-right">Optional</small>
+                                    <textarea class="form-control" rows="4" id="" ng-model="checkout.destinationLocation.shippingNotes"></textarea>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="gateway--spacer mar--top__th mar--bottom__tw"></div>
+                            <div class="col-xs-6 col-sm-6">
+                              <div class="form-group reference--number">
+                                <label for="comment">Customer Reference Number</label>
+                                <small class="pull-right">Optional</small>
+                                <input type="text" class="form-control" id="" name="referenceNumber" ng-model="checkout.referenceNumber">
+                                <small class="bitalic">Use this field to keep track of your internal reference number, eg. PO number.</small>
+                              </div>
+                            </div>
+                            <!--                            <div class="gateway--spacer mar--top__th"></div>
+                            <div class="col-md-12">
+                                                            <span class="footer--text">A total of <strong>${{quote.rate_quoted| number : 2}}</strong> USD will be charged.</span>
+                                <button class="gateway--button__large blue mar--top__tw pull-left" ng-click="confirmQuote()" ng-disabled="acceptQuoteForm.$invalid || acceptQuoteForm.$pristine"><i class="fa fa-lock fa-2" aria-hidden="true"></i>Book Shipment</button>
+                                <span class="footer--text__small">You will receive a confirmation email shortly. If you have any questions please send an email to <a href="mailto:info@gatewaysupplychain.com" >info@gatewaysupplychain.com</a>.</span>
+                                                        </div>-->
+                            </div>
+                        </div>
+                    </div>
+                <!--Left Section Ends-->
+
+                <!--Right Section Starts-->
+                <div class="checkout--right__section white element">
+                    <div class="col-md-12 sidebar-offcanvas" id="sidebar">
+                        <div class="row">
+
+                          <div class="panel-group" id="accordion">
+                            <div class="panel panel-default">
+
+                              <div class="panel-heading">
+                                <h1 class="panel-title">
+                                  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                                    Shipment Summary
+                                  </a>
+                                </h1>
+                              </div>
+
+                              <!--<h5><strong>{{deliveryOptions[selectedDeliveryType]['name']}}</strong> {{deliveryOptions[selectedDeliveryType]['transit_time']}}</h5>-->
+                              <div id="collapseOne" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                  <ul class="shipment--location">
+                                      <li>
+                                          <label class="control-label">From</label>
+                                          <small><span ng-show="quote.request.originLocation.city && quote.request.originLocation.city != ''">{{quote.request.originLocation.city}},</span> {{quote.request.originLocation.state}}, {{countryValues[quote.request.originLocation.country]}} {{quote.request.originLocation.postalCode}}</small>
+                                          <span ng-show="quote.request.originLocation.locationType && quote.request.originLocation.locationType != ''" class="location--type"><strong>Location Type:</strong> {{quote.request.originLocation.locationType}}</span>                                      </li>
+                                      <li>
+                                          <label class="control-label">To</label>
+                                          <small><span ng-show="quote.request.destinationLocation.city && quote.request.destinationLocation.city != ''">{{quote.request.destinationLocation.city}},</span> {{quote.request.destinationLocation.state}}, {{countryValues[quote.request.destinationLocation.country]}} {{quote.request.destinationLocation.postalCode}}</small>
+                                          <span ng-show="quote.request.destinationLocation.locationType && quote.request.destinationLocation.locationType != ''" class="location--type"><strong>Location Type:</strong> {{quote.request.destinationLocation.locationType}}</span>
+                                      </li>
+                                  </ul>
+
+                                  <h5 class="control-label"><strong>Products</strong></h5>
+                                  <ul class="commodities">
+                                      <li ng-repeat="freightItem in quote.request.freightItems">
+                                        <p>{{freightItem.description}}</p>
+                                          <p>
+                                              {{freightItem.quantity}} {{freightItem.unit}} of {{freightItem.dimensions.length}}” x {{freightItem.dimensions.width}}” x {{freightItem.dimensions.height}}” at {{freightItem.weight.weight}} lbs
+                                              <br/>
+                                              Class code: {{freightItem.classCode}} <span ng-show="freightItem.nmfc && freightItem.nmfc != null && freightItem.nmfc != ''">NMFC code: {{freightItem.nmfc}}</span>
+                                          </p>
+                                      </li>
+                                  </ul>
+                                  <!--<h5 class="control-label"><strong>Additional services</strong></h5>
+                                      <ul class="commodities">
+                                        <li><p>Liftgate delivery</p></li>
+                                        <li><p>White glove delivery</p></li>
+                                  </ul>-->
+                                    <h5 class="control-label"><strong>{{deliveryOptions[selectedDeliveryType]['name']}}</strong></h5>
+                                    <ul class="services" ng-if="deliveryOptions[selectedDeliveryType]['transit_time'] != ''">
+                                        <li ng-if="deliveryOptions[selectedDeliveryType]['transit_time']"><p>{{deliveryOptions[selectedDeliveryType]['transit_time']}}</p></li>
+                                        <!--<li><p>${{deliveryOptions[selectedDeliveryType]['quote_rate']| number : 2}} USD</p></li>-->
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <ul class="subtotal">
+                                <li>Shipping Rate<span class="price">${{deliveryOptions[selectedDeliveryType]['quote_rate']| number : 2}}</span></li>
+                                <!--<li>Liftgate delivery<span class="price">$16.00</span></li>-->
+                                <!--<li>Inside delivery<span class="price">$25.00</span></li>-->
+                            </ul>
+                            <ul class="total">
+                                <li>TOTAL</li>
+                                <li>USD ${{deliveryOptions[selectedDeliveryType]['quote_rate']| number : 2}}
+                                    <small><i>This price includes services and fees.</i></small>
+                                </li>
+                                <li class="last">
+                                    <div class="checkbox--gateway">
+                                        <input type="checkbox" value="1" id="agreeTermsOfSale" name="agreeTermsOfSale" ng-model="agreeTermsOfSale"/>
+                                        <label for="agreeTermsOfSale"></label>
+                                        <span>By checking this box you agree to the <a href="/policy/terms" target="_blank">Gateway Terms.</a></span>
+                                    </div>
+                                    <button class="gateway--button__large blue" ng-click="confirmQuote()" ng-disabled="acceptQuoteForm.$pristine || !agreeTermsOfSale || acceptQuoteInProgress"><i class="fa fa-lock" aria-hidden="true"></i> Book Shipment</button>
+                                    <small class="text-center">After booking shipment, you will receive an email with shipping details.
+                                      If you have any questions please contact <a href="mailto:ops@gatewaysupplychain.com">ops@gatewaysupplychain.com</a>
+                                       or call 1-855-727-4283 (Toll free).</small>
+                                    <a class="greylink text-center" href="javascript: void(0)" ng-click="backToHome()">Complete later. Back to Quotes.</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!--                <div class="checkout--right__section white element hide">
+                    <div class="col-md-12 sidebar-offcanvas" id="sidebar">
+                        <div class="row">
+                            <h1>Shipment summary</h1>
+                            <ul class="shipment--location">
+                                <li>
+                                    <label class="control-label">From</label>
+                                    <small><span ng-show="quote.request.originLocation.city && quote.request.originLocation.city != ''">{{quote.request.originLocation.city}},</span> {{quote.request.originLocation.state}}, {{countryValues[quote.request.originLocation.country]}} {{quote.request.originLocation.postalCode}}</small>
+                                </li>
+                                <li>
+                                    <label class="control-label">To</label>
+                                    <small><span ng-show="quote.request.destinationLocation.city && quote.request.destinationLocation.city != ''">{{quote.request.destinationLocation.city}},</span> {{quote.request.destinationLocation.state}}, {{countryValues[quote.request.destinationLocation.country]}} {{quote.request.destinationLocation.postalCode}}</small>
+                                </li>
+                            </ul>
+                            <h5 class="control-label"><strong>Products</strong></h5>
+                            <ul class="commodities">
+                                <li ng-repeat="freightItem in quote.request.freightItems"><p>{{freightItem.quantity}} {{freightItem.unit}} of {{freightItem.dimensions.length}}” x {{freightItem.dimensions.width}}” x {{freightItem.dimensions.height}}” at {{freightItem.weight.weight}} lbs
+                                        <br/>
+                                        Class code: {{freightItem.classCode}} <span ng-show="freightItem.nmfc && freightItem.nmfc != null && freightItem.nmfc != ''">NMFC code: {{freightItem.nmfc}}</span></p></li>
+                            </ul>
+                            <h5 class="control-label" ng-show="false"><strong>Additional services</strong></h5>
+                            <ul class="commodities" ng-show="false">
+                                <li><p>Liftgate delivery</p></li>
+                                <li><p>White glove delivery</p></li>
+                            </ul>
+                            <h5 class="control-label" ng-show="false"><strong>Standard shipping</strong><a href="#" class="pull-right">Edit</a></h5>
+                            <ul class="services" ng-show="false">
+                                <li><p>Mar 03, 2016<small>Est Delivery: 10-13 days</small></p></li>
+                                <li><p>$144 USD</p></li>
+                            </ul>
+                            <ul class="total">
+                                <li>TOTAL</li>
+                                <li>${{quote.rate_quoted| number : 2}} USD</li>
+                            </ul>
+                        </div>
+                    </div>
+                                    Right Section Ends
+                                </div>-->
+            </form>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,203 @@
+<div ng-show="invoiceSlide">
+    <div class="loading--gateway" style="display: block">
+
+    </div>
+</div>
+<div ng-show="dataLoadInProgress">
+    <div class="loading--gateway" style="display: block">
+        <div class="icon-sent"></div>
+    </div>
+</div>
+<div class="gateway--wrapper__large white maincontent">
+    <div class="container-fluid invoice--details">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="pull-left">Invoices</h1>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row" ng-show="(invoices == null || invoices.length <= 0) && !dataLoadInProgress">
+            <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+                <div class="gateway--welcome">
+                    <h2><i class="fa fa-exclamation-triangle"></i> No Invoices available.</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row gateway--home__accordion" ng-show="(invoices != null && invoices.length > 0)">
+            <div class="col-xs-12">
+                <div class="gateway--accordion__large" id="accordion" role="tablist">
+                    <div class="panel heading" role="tab">
+                        <div class="items--wrapper invoice--table">
+                            <div class="items box1">Invoice Number </div>
+                            <div class="items box2" style="text-align: left!important;">Customer Reference Number</div>
+                            <div class="items box3" style="text-align: left!important;">Order Number </div>
+                            <div class="items box4">Invoice Date </div>
+                            <div class="items box5">Amount </div>
+                            <div class="items box6">Status </div>
+                            <div class="items box7">Details </div>
+                        </div>
+                    </div>
+                    <div class="panel" role="tab" ng-repeat="invoice in invoices">
+                        <div class="invoice--table">
+                            <div class="items box1"><label class="mobile--heading">Invoice Number: </label>{{invoice.invoiceNumber}}</div>
+                            <div class="items box2" style="text-align: left!important;"><label class="mobile--heading">Customer Reference Number: </label>{{invoice.trackingNumbers}} </div>
+                            <div class="items box3" style="text-align: left!important;"><label class="mobile--heading">Order Number :</label>{{invoice.memo}}</div>
+                            <div class="items box4"><label class="mobile--heading">Invoice Date :</label>{{invoice.invoiceDate}}</div>
+                            <div class="items box5"><label class="mobile--heading">Amount :</label>${{invoice.total| number: 2}} </div>
+                            <div class="items box6">
+                                <label class="mobile--heading">Status :</label>{{invoice.status}}
+                            </div>
+                            <div class="items box7">
+                                <a href="javascript:void(0)" ng-click="openPageSlide(invoice)">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--          <div class="panel" role="tab">
+                                <div class="invoice--table">
+                                  <div class="items box1"><label class="mobile--heading">Invoice Number: </label>Q-20014290 </div>
+                                  <div class="items box2"><label class="mobile--heading">Order Number :</label>20014290</div>
+                                  <div class="items box3"><label class="mobile--heading">Invoice Date :</label>Mar 10, 2017</div>
+                                  <div class="items box4"><label class="mobile--heading">Amount :</label>$293 </div>
+                                  <div class="items box5">
+                                    <label class="mobile--heading">Status :</label>Draft
+                                  </div>
+                                  <div class="items box6">
+                                    <a href="javascript:void(0)" ng-click="setPageSlideFlag(true)">View Details</a>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="panel" role="tab">
+                                <div class="invoice--table">
+                                  <div class="items box1"><label class="mobile--heading">Invoice Number: </label>Q-20014290 </div>
+                                  <div class="items box2"><label class="mobile--heading">Order Number :</label>20014290</div>
+                                  <div class="items box3"><label class="mobile--heading">Invoice Date :</label>Mar 10, 2017</div>
+                                  <div class="items box4"><label class="mobile--heading">Amount :</label>$293 </div>
+                                  <div class="items box5">
+                                    <label class="mobile--heading">Status :</label>Draft
+                                  </div>
+                                  <div class="items box6">
+                                    <a href="javascript:void(0)" ng-click="setPageSlideFlag(true)">View Details</a>
+                                  </div>
+                                </div>
+                              </div>-->
+                </div>
+            </div>
+        </div>
+        <div class="row myquote--pagination" ng-show="(invoices != null && invoices.length > 0)">
+            <div class="col-xs-3 sorting--left"></div>
+            <div class="col-xs-6">
+                <div class="dataTables_paginate paging_bs_four_button" id="DataTables_Table_0_paginate">
+                    <ul class="pagination">
+                        <li ng-class="filter.pageNo <= 1 ? 'disabled' : ''">
+                            <a href="javascript:void(0)" tabindex="0" class="paginate_button first" id="DataTables_Table_0_first" ng-click="goToPage(1)" ng-disabled="filter.pageNo <= 1">&nbsp;First</a>
+                        </li>
+                        <li ng-class="filter.pageNo <= 1 ? 'disabled' : ''">
+                            <a href="javascript:void(0)" tabindex="0" class="paginate_button previous" id="DataTables_Table_0_previous" ng-click="goToPage(filter.pageNo - 1)" ng-disabled="filter.pageNo <= 1">&nbsp;Previous</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link link" ><span>{{filter.pageNo}}</span> of <span>{{totalPage}}</span></a>
+                        </li>
+                        <li ng-class="filter.pageNo >= totalPage ? 'disabled' : ''">
+                            <a href="javascript:void(0)" tabindex="0" class="paginate_button next" id="DataTables_Table_0_next" ng-click="goToPage(filter.pageNo + 1)" ng-disabled="filter.pageNo >= totalPage">Next&nbsp;</a>
+                        </li>
+                        <li ng-class="filter.pageNo >= (totalPage) ? 'disabled' : ''">
+                            <a href="javascript:void(0)" tabindex="0" class="paginate_button last" id="DataTables_Table_0_last" ng-click="goToPage(totalPage)" ng-disabled="filter.pageNo >= totalPage">Last&nbsp;</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-xs-3 sorting--page">
+                <div class="form-group">
+                    <label>
+                        <div class="result--heading">Results per page:</div>
+                        <label class="delivery--select">
+                            <select class="form-control" id="exampleSelect1" ng-model="filter.limit" ng-change="limitChanged()">
+                                <option value="10" ng-selected="filter.limit == 10">10</option>
+                                <option value="20" ng-selected="filter.limit == 20">20</option>
+
+                            </select>
+                        </label>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<pageslide ps-open="invoiceSlide" ps-size="75%" ps-speed="1" ps-click-outside="true" id="invoiceSliderId">
+    <!-- <div id="priceDrilldownSlidePanelDiv" class="bds--views__pdppreview" style="margin-top: 0px; width: 100%;">
+    </div> -->
+    <!-- Pageslide Starts Here -->
+    <div class="container-fluid invoice--details">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <button type="button" class="close close--modal" href="javascript:void(0);" ng-click="setPageSlideFlag(false)">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h1>Invoice</h1>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <h3 style="font-weight: 600; margin: 30px 0 0 0;">Invoice To</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-md-6 col-lg-6">
+                <p class="address"><span ng-show="slideModal.billingAddress.addressLine1 != null && slideModal.billingAddress.addressLine1 != ''">{{slideModal.billingAddress.addressLine1}}</br></span>
+                    <span ng-show="slideModal.billingAddress.addressLine2 != null && slideModal.billingAddress.addressLine2 != ''">{{slideModal.billingAddress.addressLine2}}</br></span>
+                    <span ng-show="(slideModal.billingAddress.city != null && slideModal.billingAddress.city != '') || (slideModal.billingAddress.state != null && slideModal.billingAddress.state != '')"><span ng-show="slideModal.billingAddress.city != null && slideModal.billingAddress.city != ''">{{slideModal.billingAddress.city}},</span> {{slideModal.billingAddress.state}}</br></span>
+                    <span ng-show="slideModal.billingAddress.zipCode != null && slideModal.billingAddress.zipCode != ''">{{slideModal.billingAddress.zipCode}}</br></span>
+                    {{slideModal.billingAddress.country}}
+                </p>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-6">
+                <div class="details"><label>Invoice#: </label> <span>{{slideModal.invoiceNumber}}</span></div>
+                <div class="details"><label>Date: </label> <span>{{slideModal.invoiceDate}}</span></div>
+                <div class="details"><label>Memo: </label> <span>{{slideModal.orderNumber}}</span></div>
+                <div class="details"><label>Order#: </label> <span>{{slideModal.memo}}</span></div>
+                <div class="details"><label>Ship Date: </label> <span>{{slideModal.shipDate}}</span></div>
+                <div class="details"><label>Customer Reference#: </labl> <span>{{slideModal.trackingNumbers}}</span></div>
+                <div class="details"><label>Due Date: </label> <span>{{slideModal.dueDate}}</span></div>
+                <div class="details"><label>Currency: </labl> <span>{{slideModal.currencyName}}</span></div>
+            </div>
+        </div>
+        <table class="table table-bordered price--table">
+            <thead>
+                <tr>
+                    <th>Items</th>
+                    <th>Description</th>
+                    <th style="text-align: right;">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in slideModal.items">
+                    <td>{{item.name}}</td>
+                    <td>{{item.description}}</td>
+                    <td style="text-align: right;" class="col-width">${{item.amount| number: 2}}</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr ng-show="slideModal.totalTax > 0 || slideModal.totalPst > 0">
+                    <td colspan="2">Subtotal</td>
+                    <td>${{slideModal.subTotal| number: 2}}</td>
+                </tr>
+                <tr ng-show="slideModal.totalTax > 0 || slideModal.totalPst > 0">
+                    <td colspan="2">Tax</td>
+                    <td>${{slideModal.totalTax| number: 2}}</td>
+                </tr>
+                <tr ng-show="slideModal.totalTax > 0 || slideModal.totalPst > 0">
+                    <td colspan="2">PST</td>
+                    <td>${{slideModal.totalPst| number: 2}}</td>
+                </tr>
+                <tr>
+                    <td colspan="2">Total</td>
+                    <td>${{slideModal.total| number: 2}}</td>
+                </tr>
+            </tfoot>
+        </table>
+        <div class="clearfix"></div>
+    </div>
+
+
+
+
+    <!-- Page Ends Here -->
+</pageslide>

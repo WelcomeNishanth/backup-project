@@ -1,0 +1,30 @@
+version: 0.1
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION)
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...          
+      - docker build -t gateway-portal-ui .
+      - docker tag gateway-portal-ui:latest 419539186404.dkr.ecr.us-east-1.amazonaws.com/$CODEBUILD_BUILD_ID 
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push 419539186404.dkr.ecr.us-east-1.amazonaws.com/$CODEBUILD_BUILD_ID
+      - rm -rf taskDefinition
+      - mkdir taskDefinition
+      - sed -e "s;%BUILD_ID%;$CODEBUILD_BUILD_ID;g" deployment-script/gateway-portal-ui-dev.json > taskDefinition/gateway-portal-ui-dev.json
+      - sed -e "s;%BUILD_ID%;$CODEBUILD_BUILD_ID;g" deployment-script/gateway-portal-ui-qa.json > taskDefinition/gateway-portal-ui-qa.json
+      - sed -e "s;%BUILD_ID%;$CODEBUILD_BUILD_ID;g" deployment-script/gateway-portal-ui-ci.json > taskDefinition/gateway-portal-ui-ci.json
+      - sed -e "s;%BUILD_ID%;$CODEBUILD_BUILD_ID;g" deployment-script/gateway-portal-ui-production.json > taskDefinition/gateway-portal-ui-production.json
+      - sed -e "s;%BUILD_ID%;$CODEBUILD_BUILD_ID;g" deployment-script/gateway-portal-ui-demo.json > taskDefinition/gateway-portal-ui-demo.json
+      - echo "Task Definition files updated" 
+artifacts:
+  files:
+    - taskDefinition/*
+  discard-paths: yes

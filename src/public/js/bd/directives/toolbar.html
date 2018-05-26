@@ -1,0 +1,113 @@
+<nav class="navbar navbar-default gateway--nav" role="navigation" >
+    <div class="gateway--wrapper__large">
+      <div class="overlay--menu"></div>
+        <div class="mobmenu"  id="ust" ng-show="user.contractSigned">
+          <div id="menuac">
+              <span></span>
+          </div>
+          <div id="MainMenu">
+            <div class="list-group panel">
+                <a href="#/home" class="list-group-item mobilenavleft">Quotes</a>
+                <a href="#/delivery/orders" class="list-group-item mobilenavleft">Deliveries & Tracking</a>
+                <a href="#/invoice/invoices" class="list-group-item mobilenavleft">Invoices</a>
+                <!--<a href="#/account/profile/myprofile" class="list-group-item mobilenavleft">Account Details</a>-->
+            </div>
+          </div>
+        </div>
+        <div class="navbar-header">
+            <!-- <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button> -->
+          <button type="button" class="navbar-toggle" id="menuacright">
+            <i class="fa fa-user-circle-o fa-2 user-icon" aria-hidden="true"></i>
+          </button>
+          <a href="#/home" class="navbar-brand gateway--branding">Gateway Supply Chain Services</a>
+          <div class="sel--mainnav__menu">
+            <nav>
+              <ul class="sel--mainnav">
+                <!-- <li><a href="#" class="home-menu menu-item active" title="Home">Dashboard</a></li> -->
+                <li><a href="#/home" class="main-menu main-menu-shipping" title="">Shipping</a></li>
+                <!-- <li><a href="#" class="home-menu menu-item active" title="Home">Warehousing</a></li> -->
+                <li><a href="#/invoice/invoices" class="main-menu main-menu-invoice" title="">Invoices</a></li>
+              </ul>
+            </nav>
+          </div>
+          <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right gateway--navbar__nav">
+              <li class="submenu--desktop"><a href="https://gateway.zendesk.com/hc/en-us/" target="_blank">Help</a></li>
+              <li class="dropdown navbar-nav__dropdown user-profile">
+                <a href="javascript: void(0);" class="dropdown-toggle" data-toggle="dropdown">
+                  <i class="fa fa-user-circle-o fa-2" aria-hidden="true"></i>
+                  <strong >{{user.first_name}}</strong>
+                  <i class="fa fa-caret-down fa-1" aria-hidden="true"></i>
+                </a>
+                <ul class="dropdown-menu gateway_menu">
+                  <li class="navbar-login-session-bg"></li>
+                  <li ng-show="user.contractSigned"><a href="#/account/profile/myprofile">My Profile</a></li>
+                  <li class="divider" ng-show="user.contractSigned"></li>
+                  <li ng-show="user.contractSigned"><a href="#/account/profile/company">Company Profile</a></li>
+                  <li class="divider" ng-show="user.contractSigned"></li>
+                  <li><a href="javascript: void(0);" onclick="signout()">Sign Out</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+    </div>
+</nav>
+
+ <!-- Header Starts -->
+      <header class="gateway--header" ng-class="{'gateway--header__small': !user.contractSigned}">
+        <div class="gateway--wrapper__large">
+          <div class="container-fluid" ng-show="user.contractSigned">
+          <div class="row">
+              <div class="col-sm-12 user-profile">
+                <div class="profile--name__hero" id="username-div">Welcome, {{user.first_name}}</div>
+              </div>
+          </div>
+
+          <div class="clearfix"></div>
+
+          <div class="row">
+              <div class="col-sm-12 gateway--submenu user-profile">
+                  <nav class="pull-left">
+                    <ul class="nav nav-pills main-menu-shipping-sub sub-menu-container">
+                      <li><a href="#/home" class="sub-menu sub-menu-myquotes">Quotes</a></li>
+                      <!-- <li><a href="#/quote/request" class="sub-menu sub-menu-requestquote">Request Quote</a></li> -->
+                      <li><a href="#/delivery/orders" class="sub-menu sub-menu-delivery-orders">Deliveries & Tracking</a></li>
+                    </ul>
+                    <ul class="nav nav-pills main-menu-invoice-sub sub-menu-container">
+                      <li><a href="#/invoice/invoices" class="sub-menu sub-menu-invoices">Invoices</a></li>
+                    </ul>
+                  </nav>
+              </div>
+          </div>
+
+        </div>
+        </div>
+      </header>
+      <!-- Header Ends-->
+      <div class="overlay--menu__right"></div>
+      <div class="mobmenuright">
+        <div id="MainMenuRight">
+          <div class="closemenu">
+            <button type="button" class="close--menu" data-dismiss="alert" aria-hidden="true">×</button>
+          </div>
+          <div class="list-group panel">
+            <a href="#rightmenu" class="list-group-item" data-toggle="collapse" data-parent="#MainMenuRight" ng-show="user.contractSigned">
+              Account Setting<i class="glyphicon glyphicon-chevron-down pull-right"></i></a>
+            <div class="collapse" id="rightmenu" ng-show="user.contractSigned">
+              <a ng-show="user.contractSigned" href="#/account/profile/myprofile" class="list-group-item submenu mobilenav">My Profile</a>
+              <a ng-show="user.contractSigned" href="#/account/profile/company" class="list-group-item submenu mobilenav">Company Profile</a>
+            </div>
+            <!-- <a href="#" class="list-group-item">Billing  Information</a>
+            <a href="#" class="list-group-item">My Team</a>
+            <a href="#" class="list-group-item">Support</a> -->
+            <a class="list-group-item mobilenav" href="https://gateway.zendesk.com/hc/en-us/" target="_blank">Help</a>
+            <a class="list-group-item mobilenav" href="javascript: void(0);" onclick="signout()">Sign Out</a>
+          </div>
+        </div>
+      </div>
+      <!-- Mobile menu ends here -->

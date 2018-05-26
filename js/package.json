@@ -1,0 +1,17 @@
+{
+  "name": "aws-lambda-gateway",
+  "version": "0.1.0",
+  "description": "An AWS Lambda Function to create Gateway user & Company",
+  "scripts": {"start": "node contactsync.js"},
+  "keywords": [
+    "aws",
+    "lambda",
+    "Gateway"
+  ],
+  "author": "Ajay",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "4.12.0",
+    "async" : "^2.0.1"
+  }
+}
